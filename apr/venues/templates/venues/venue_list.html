@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %} {% trans "Schedules" %} | {{site.name}}{% endblock %}
+
+{% block extracss %}
+	<link type="text/css" rel="stylesheet" href="{% static 'datatables/css/jquery.dataTables.min.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'datatables/css/dataTables.bootstrap.css' %}" />
+{% endblock %}
+
+{% block main_content %}
+	{# {% cache 1200 vulist CUSTOMER.pk request.user.pk %} #}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+	    {% block calendar_title %} {% trans "Schedules" %} {% endblock %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+	  	{% if request.user.userprofile.is_admin %}
+	  	<div class="alert alert-info" role="alert">	 
+	  		<p>{% trans "A schedule represents one resource -- a room, service provider, machine, etc -- whose appointments need to be tracked. You have" %} <strong>{{CUSTOMER.number_of_venues}} {% trans "schedules" %}</strong> {% trans "and can create up to" %} <strong>{{CUSTOMER.customersubscription.subscription.max_schedules}} {% trans "schedules" %}</strong> {% trans "at your subscription level. If you need more, please" %} <strong><a href="{% url 'customer:subscription' %}">{% trans "upgrade your account" %}</a></strong>.</p>
+	  		<p>{% trans "You can configure what days and times are available for each schedule (for example, Monday ~ Friday, 10 AM to 7 PM, etc)." %}</p>
+	  	</div>
+	  	{% endif %}
+	    {{ datatable }}
+	  </div>
+	</div>	
+	{# {% endcach e %} #}
+{% endblock %}
+
+{% block extrajs %}
+	<script src="{% static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'datatables/js/dataTables.bootstrap.js' %}"></script>
+	<script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/datatableview.min.js"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class=" mt-3 row justify-content-center ">
+        <div class="card">
+          <div class="card-body">
+              <h2 class="text-center">Add <b>new user</b> </h2>
+             <form method="post" novalidate>
+                 {% csrf_token %}
+    <!--             <input type="hidden" name="next" value="{{ next }}">-->
+                 {{ form|crispy }}
+                 <button type="submit" class="btn bg-primary text-white btn-lg btn-block">Add</button><br>
+                 <a href="{%url 'login'%}" class="btn btn-link w-100">login</a>
+             </form>
+          </div>
+        </div>
+    </div>
+
+
+{% endblock%}

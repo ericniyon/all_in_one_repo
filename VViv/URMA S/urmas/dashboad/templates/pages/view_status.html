@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}
+      Missions Management System
+    {% endblock title %}
+</head>
+<body>
+
+    <!-- {% block notification %}
+    {{notification}}
+  {% endblock notification %} -->
+
+    {% block content %}
+    
+    
+
+    <div class="card">
+      <div class="card-header">
+        <h6 class="text-white">Mission status</h6>
+      </div>
+      <!-- <div class="card-body"> -->
+        <table class="table  table-hover table-bounded">
+          <thead>
+            <tr>
+              <th scope="col">Requester Name</th>
+              <!-- <th scope="col">Superviser</th> -->
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          
+          
+         {% if staff %}
+         {% for file in staff %}
+  
+         <tbody>
+         <tr>
+           
+           <!-- <td>{{file.upload_file}}</td> -->
+       <td>Requested  by <b>{{file.requester}}</b></td>
+
+           {% if user.is_authenticated %}
+
+           <!-- {% if user.is_superviser %}
+           <td>{{user.username}}</td>
+           {% endif %}
+     
+           {% endif %} -->
+
+           {% if file.status == 'Pending' %}
+           <td><span class="badge badge-dark">{{file.status}}</span></td>
+           {% elif file.status == 'Aproved'%}
+           <td><span class="badge badge-info">{{file.status}}</span></td>
+           {% elif file.status == 'Rejected'%}
+           <td><span class="badge badge-danger">{{file.status}}</span></td>
+
+           {% elif file.status == 'Authorized'%}
+           <td><span class="badge badge-success">{{file.status}}</span></td>
+           {% endif %}
+
+           <!-- <td><span class="badge badge-info">{{file.status}}</span></td> -->
+           <td>
+             <a href="{% url 'update' pk=file.pk%}"><button class="btn btn-sm btn-info fa fa-edit"></button></a>
+             <a href="{% url 'delete' pk=file.pk%}"><button class="btn btn-sm btn-danger fa fa-trash"></button></a>
+             
+           </td>
+         </tr>
+         {% endfor %}
+         {% else %}
+         <tr class="text-center">
+           <td>
+            <span>Non Requests has been created</span>
+           </td>
+         </tr>
+         {% endif %}
+            
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+          
+    {% endblock content %}
+</body>
+</html>

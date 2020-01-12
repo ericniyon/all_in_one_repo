@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}
+      Missions Management System
+    {% endblock title %}
+</head>
+<body>
+
+
+{% for m in notification %}
+{% if m.school == user.school %}
+
+  {% block notification %}
+  {{notification}}
+  {% endblock notification %}
+{% endif %}
+{% endfor %}
+  
+
+
+
+
+
+  
+    {% block content %}
+    
+    
+
+    <div class="card">
+      <div class="card-header">
+        <h6>Missions List</h6>
+      </div>
+      <div class="">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Requester Name</th>
+              
+              <th scope="col">Status</th>
+              <th scope="col">Action To Perform</th>
+            </tr>
+          </thead>
+          
+          
+          {% for file in aprove %}
+            
+            {% if file.school == user.school %}
+            <tbody>
+            
+
+              <tr onclick="document.location='{% url 'details' file.pk %}'" style="cursor:hand" >
+              
+                <td><i>Requested by</i> <span class="ml-5">{{file.role}} </span>      <b>{{file.requester}}</b></td>
+                
+
+                {% if file.status == 'Pending' %}
+                <td><span class="badge badge-dark">{{file.status}}</span></td>
+                {% elif file.status == 'Aproved'%}
+                <td><span class="badge badge-info">{{file.status}}</span></td>
+                {% elif file.status == 'Rejected'%}
+                <td><span class="badge badge-danger">{{file.status}}</span></td>
+                {% elif file.status == 'Authorized'%}
+                <td><span class="badge badge-success">{{file.status}}</span></td>
+                {% endif %}
+                <td><a href="{% url 'invitation' file.pk %}"><button class="btn btn-sm btn-info fa fa-bars ml-5">View Doc</button></a></td>
+                
+              </tr>
+          
+              
+            
+            
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+   
+    {% endblock content %}
+
+    <script>
+          $("tr").click(function(){
+        window.location = "example.html";
+      });
+    </script>
+</body>
+</html>

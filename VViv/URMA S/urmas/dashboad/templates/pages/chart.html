@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title> 
+  {% block title %}
+      
+  {% endblock title %}
+       </title>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  
+
+ 
+
+ <script type="text/javascript">
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Urmas Chart'
+            },
+            xAxis: {
+                categories: [ 'Class 1', 'Class 2', 'Class 3', 'Class 4' ]
+            },
+            yAxis:{
+                categories:[0,0.5,1,1.5,2 ,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10]
+            },
+            series: [{
+                name: 'Aproved',
+                data: [200,100,50,100]
+            }, {
+                name: 'Pending',
+                data: [133, 156, 947, 408]
+            }, {
+                name: 'Authorized',
+                data: [340, 954, 250, 740, ]
+            },{
+                name:'Rejected',
+                data:[211,400,150,431]
+            }]
+        });
+
+       
+      </script>
+
+
+
+
+    
+
+</body>
+</html>

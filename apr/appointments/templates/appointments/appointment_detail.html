@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block extracss %}{% endblock %}
+{% block title %}{{object.event.title}} | {{site.name}}{% endblock %}
+{% block main_content %}
+	{# {% cache 1200 appdetail CUSTOMER.pk object.pk %} #}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+	    {% block calendar_title %}{{object.event.title}}{% endblock %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+	  	<div class="col-md-12 text-right">
+	  		<a href="{% url 'appointments:appointment_edit' pk=object.pk %}" class="btn btn-sm btn-primary">{% trans "Edit" %}</a>
+	  		<a href="{% url 'appointments:appointment_delete' pk=object.pk %}" class="btn btn-sm btn-danger">{% trans "Delete" %}</a>
+	  		<br>
+	  		<br>
+	  	</div>
+	  	<div class="table-responsive">
+	  	  <table class="table">
+	  	  	<tr><th colspan="2">{% trans "Client details" %}</th></tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Name" %}</th>
+	  	  		<td width="80%">{{object.client.get_full_name}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Phone" %}</th>
+	  	  		<td width="80%">{{object.client.phone}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Email" %}</th>
+	  	  		<td width="80%">{{object.client.email}}</td>
+	  	  	</tr>
+	  	  	{% if object.client.client_id %}
+	  	  	<tr>
+	  	  		<th>{% trans "Client ID" %}</th>
+	  	  		<td width="80%">{{object.client.client_id}}</td>
+	  	  	</tr>
+	  	  	{% endif %}
+	  	  	<tr><th colspan="2">{% trans "Appointment details" %}</th></tr>
+	  	    <tr>
+	  	    	<th>{% trans "Title" %}</th>
+	  	    	<td width="80%">{{object.event.title}}</td>
+	  	    </tr>
+	  	    <tr>
+	  	    	<th>{% trans "Start" %}</th>
+	  	    	<td width="80%">{{object.event.start}}</td>
+	  	    </tr>
+	  	    <tr>
+	  	    	<th>{% trans "End" %}</th>
+	  	    	<td width="80%">{{object.event.end}}</td>
+	  	    </tr>
+	  	    <tr>
+	  	    	<th>{% trans "Schedule" %}</th>
+	  	    	<td width="80%">{{object.venue}}</td>
+	  	    </tr>
+	  	    {% if CUSTOMER.use_tags %}
+	  	    <tr>
+	  	    	<th>{% trans "Tag" %}</th>
+	  	    	<td width="80%">{{object.tag}}</td>
+	  	    </tr>
+	  	    {% endif %}
+	  	    <tr>
+	  	    	<th>{% trans "Created by" %}</th>
+	  	    	<td width="80%">{{object.creator.email}}</td>
+	  	    </tr>
+	  	    <tr>
+	  	    	<th>{% trans "Created on" %}</th>
+	  	    	<td width="80%">{{object.created_on}}</td>
+	  	    </tr>
+	  	    <tr>
+	  	    	<th>{% trans "Notes" %}</th>
+	  	    	<td width="80%">{{object.event.description}}</td>
+	  	    </tr>
+	  	  </table>
+	  	</div>
+	  </div>
+	</div>	
+	{# {% endcache %} #}
+{% endblock %}
+{% block extrajs %}{% endblock %}

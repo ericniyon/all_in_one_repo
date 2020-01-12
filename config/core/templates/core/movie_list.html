@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   {% block main %}
+   <ul>
+        
+    {% for object in object_list %}
+        <li>
+            <a href="{% url 'ditails' pk=object.id %}">
+                {{object}}
+            </a>
+        </li>
+        {% empty %}
+        <li>
+            Not Movie has been created
+            {% endfor %}
+        </li>
+        <p>
+            Using https ?
+            {{request.is_secure | yesno}}
+        </p>
+    
+        
+</ul>
+   {% endblock main %}
+</body>
+</html>

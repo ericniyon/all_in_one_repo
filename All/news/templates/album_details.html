@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+    {% for song in album_d.song_set.all %}
+
+        <div class="card">
+            <div class="card-header">
+                    <h3>{{ song.name }}</h3>
+            </div>
+            <div class="card-bady">
+                    <p>{{ song.song_type }}</p>
+                     <p>{{ song.song_formt }}</p>
+                     <button type="submit" class="btn btn-danger">  <a href="#">Update</a> </button>
+            </div>
+        </div>
+
+    {% endfor %}
+
+
+{% endblock %}
+</body>
+</html>

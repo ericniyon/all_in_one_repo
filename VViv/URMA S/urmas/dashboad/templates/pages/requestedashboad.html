@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}
+    Missions Management System
+    {% endblock title %}
+</head>
+<body>
+
+   {% block notification %}
+     {{ notification }}
+   {% endblock notification %}
+
+   
+    {% block content %}
+
+    <div class="row ">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat bg-primary-300 shadow-lg" href="">
+    
+                <span class="number counter"> {{aproved}} </span>
+                <span class="name text-white">Aproved Missions</span>
+                <span class="bg-icon"><i class="fa fa-inbox"></i></span>
+            </a>
+            <!-- /.dashboard-stat -->
+        </div>
+        <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
+    
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat " href="" style="background: #5C5C61; color: white;">
+                <span class="number counter"> {{ notification }} </span>
+                <span class="name" >Pending Requests</span>
+                <span class="bg-icon"><i class="fa fa-ticket"></i></span>
+            </a>
+            <!-- /.dashboard-stat -->
+        </div>
+        <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
+    
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat bg-success-500" href="">
+                <span class="number counter"> {{authorized}} </span>
+                <span class="name">Authorized requests</span>
+                <span class="bg-icon"><i class="fa fa-bank"></i></span>
+            </a>
+            <!-- /.dashboard-stat -->
+        </div>
+        <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
+    
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat bg-warning-500" href="">
+    
+                <span class="number counter"> {{rejected}} </span>
+                <span class="name">Rejected Request</span>
+                <span class="bg-icon"><i class="fa fa-dropbox"></i></span>
+            </a>
+            <!-- /.dashboard-stat -->
+        </div>
+        <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
+    
+    </div>
+
+
+
+
+   <div>
+     {% include 'pages/chart.html' %}
+   </div>
+
+<hr>
+
+
+
+<div class="card ">
+ <!-- <div class="card-header ">
+  <b class="text-white ">Mission Lists</b>
+ </div> -->
+<!-- <div class="card-body"> -->
+  <table class="table  table-hover table-bounded table-responsive-lg table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Requester Name</th>
+        <!-- <th scope="col">Superviser</th> -->
+        <th scope="col">Status</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    
+   {% if staff %}
+     
+    
+    {% for any in staff %}
+      <tbody>
+        <tr>
+        
+          <td>Requested  by  : <b>{{any.requester}}</b></td>
+        {% if any.status == 'Pending' %}
+        <td><span class="badge badge-secondary">{{any.status}}</span></td>
+
+        {% elif any.status == 'Aproved'%}
+        <td><span class="badge badge-info">{{any.status}}</span></td>
+
+        {% elif any.status == 'Rejected'%}
+        <td><span class="badge badge-danger">{{any.status}}</span></td>
+
+        {% elif any.status == 'Authorized'%}
+        <td><span class="badge badge-success">{{any.status}}</span></td>
+        {% endif %}
+        
+        
+        
+        <td>{{any.requested_on}}</td>
+      </tr>
+      
+      {% endfor %}
+        {% else %}
+        <tr class="text-center">
+          <td> <span >There Is No Request has been Created By {{user.username}}</span></td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+<!-- </div> -->
+</div>
+          
+          
+
+
+
+
+{% endblock content %}
+
+        
+</body>
+</html>

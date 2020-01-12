@@ -1,0 +1,42 @@
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+
+    <div class="row">
+{% include 'header.html' %}
+         <div class="col-md-8 offset-2">
+                 <div class="card card-default pt-5">
+                     <div class="card-header pb-2">
+
+                     </div>
+                <div class="card-body">
+                    <form class="form-horizontal" method="post" action=""enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="form-group">
+                            <div class="col-md-offset-2">
+                                <button type="submit" class="btn btn-danger p-6">Submit</button>
+                                
+                            </div>
+                        </div>
+
+                </form>
+                </div>
+            </div>
+            </div>
+        <div class="col-md-3 offset-3">
+
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>

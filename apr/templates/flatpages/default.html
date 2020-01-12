@@ -1,0 +1,20 @@
+{% extends "front-base.html" %}
+{% load i18n %}
+{% load cache %}
+
+{% block title %}{% cache 86400 flatpage_title flatpage.pk %}{{ flatpage.title }} | {{site.name}}{% endcache %}{% endblock %}
+
+{% block all_content %}
+	{% cache 86400 flatpage_content flatpage.pk %}
+	<div id="main-page">
+	    <div class="row content-section">
+	      <div class="container">
+	        <div class="col-md-9">
+	        	<h3>{{ flatpage.title }}</h3>
+	         	<div class="page-content">{{ flatpage.content }}</div>
+	      	</div>
+	      	{% include 'core/snippets/front-sidebar.html' %}
+	    </div>
+    </div>
+    {% endcache %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+
+    <div class="row">
+{% include 'header.html' %}
+         <div class="col-md-8 offset-2">
+                 <div class="card card-default pt-5">
+                     <div class="card-header">
+
+                     </div>
+                <div class="card-body">
+                    <form class="form-horizontal p-56" method="post" action=""enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="form-group">
+                            <div class="col-md-offset-2">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                            </div>
+                        </div>
+
+                </form>
+                </div>
+            </div>
+            </div>
+        <div class="col-md-3 offset-3">
+
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>

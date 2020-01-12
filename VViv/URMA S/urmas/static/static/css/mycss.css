@@ -1,0 +1,56 @@
+body {
+    padding: 0;
+    margin: 0;
+    
+    background: #ffffff;
+    /* font-size: 15px; */
+  }
+  body div {
+    margin: 0;
+  }
+  .btn{
+    background:#006991;
+  }
+  /*--- navigation bar ---*/
+  .navbar {
+    background:#006991;
+    height: 45px;
+    background-size: cover;
+   
+  
+  }
+.form-control{
+  box-sizing: border-box;
+  font-size: 10px;
+}
+  .features .form-control,
+.features input {
+    border-radius: 0;
+}
+  .nav-link,
+  .navbar-brand {
+    color: #fff;
+    cursor: pointer;
+  }
+  .nav-link {
+    margin-right: 1em !important;
+  }
+  .nav-link:hover {
+    color: #000;
+  }
+  .navbar-collapse {
+    justify-content: flex-end;
+  }
+.card .card-header{
+  background-color: #006991;
+  color: white;
+}
+big, code, small, sub, sup {
+  line-height: inherit;
+}
+small#hint_id_password1{
+  line-height: 1;
+}
+.selector-for-some-widget {
+  box-sizing: content-box;
+}

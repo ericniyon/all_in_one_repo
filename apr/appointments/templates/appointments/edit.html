@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block extracss %}
+	<link rel="stylesheet" href="{% static 'css/datepicker3.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="{% static 'select2/css/select2.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'select2/css/select2-bootstrap.css' %}" />
+{% endblock %}
+
+{% block title %}{% trans "Edit" %} {{object.event.title}} | {{site.name}}{% endblock %}
+
+{% block main_content %}
+	{# {% cache 600 evedit CUSTOMER.pk object.pk %} #}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+	    {% block calendar_title %}{% trans "Edit" %} {{object.event.title}}{% endblock %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+	    <div class="row" id="create-event">
+	    	{% crispy form %}
+	    </div>
+	  </div>
+	</div>	
+	{# {% endcache %} #}
+{% endblock %}
+
+{% block extrajs %}
+	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+	<script src="{% static 'js/datepair.min.js' %}"></script>
+	<script src="{% static 'js/jquery.datepair.min.js' %}"></script>
+	<script src="{% static 'select2/js/select2.full.min.js' %}"></script>
+	<script>
+		$(document).ready(function() {			
+			//date time selects
+			// initialize input widgets first
+			$('#id-datetime-pairs .time').timepicker({
+				'showDuration': true,
+				'timeFormat': 'g:ia'
+			});
+			$('#id-datetime-pairs .date').datepicker({
+				'format': 'dd-mm-yyyy',
+				'autoclose': true,
+				'todayBtn': true,
+				'todayHighlight': true,
+			});
+
+		    // initialize datepair
+		    $('#id-datetime-pairs').datepair();	
+
+		    // secelt2 		
+		    $("#id-venue").select2({
+		    	placeholder: "{% trans 'Select a schedule' %}",
+		    	width:'100%',
+		    });
+		    		
+		    $("#id-tag").select2({
+		    	placeholder: "{% trans 'Select Tag' %}",
+		    	width:'100%',
+		    	allowClear: true,
+		    });
+	  	});	
+	</script>
+{% endblock %}

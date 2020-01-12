@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+  
+ div small ul li{
+   line-height:normal;
+   color: aquamarine;
+  }
+</style>
+  
+</head>
+<body>
+  {% block content %}
+    <!-- <div class="row">
+      <div class="col-md-12 "> -->
+        <div class="card">
+          <div class="card-header">
+            <h6>Add Staff</h6>
+          </div>
+            <div class="card-body">
+                <form action="" method="POST" autocomplete="off" " >
+                    {% csrf_token %}
+                    
+                    {{ addingStaff|crispy }}
+    
+                    <input type="submit" value="submit" class="btn btn-info btn-sm">
+                  </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  {% endblock content %}
+
+
+  <!-- <script>
+    var form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    })
+</script> -->
+</body>
+</html>

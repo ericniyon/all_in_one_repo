@@ -1,0 +1,304 @@
+<!doctype html>
+{%load static%}
+ <html lang="en">
+   <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="{%static 'css/mycss.css'%}" rel="stylesheet">
+        <link href="{%static 'css/font-awesome.min.css'%}" rel="stylesheet">
+        <link href="{%static 'css/main.css'%}" rel="stylesheet">
+
+        <title>{%block title%}URMAS{%endblock%} </title>
+
+        <!-- <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Tangerine"> -->
+
+      <link href="https://fonts.googleapis.com/css?family=Amiri&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+          <!------------------------------------------------------------->
+          <!------------------------------------------------------------->
+
+          <link rel="stylesheet" href="{% static 'jquery/jquery-ui.min.css' %}">
+       
+          <!-- <link rel="stylesheet" href="{% static 'jquery-ui/jquery-ui.structure.min.css' %}">
+          <link rel="stylesheet" href="{% static 'jquery-ui/jquery-ui.min.css' %}"> -->
+       
+       <style>
+
+          body{
+            background: #FFFFFF;
+          }
+         
+          .sid a:hover {
+            color: #fff;
+            background-color:#006991;
+          }
+          .sid a{
+            color:black;
+            padding: 15px;
+            text-decoration:none;
+          }
+         .list-group-item:last-child {
+            margin-bottom: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+         }
+         h6{
+            color: white;
+         }
+
+         .list-group-item:first-child {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+         }
+         small#hint_id_password1{
+               line-height: inherit;
+               
+               
+         }
+         small#hint_id_password1 ul{
+               line-height: inherit;
+               list-style-type: none;
+               
+         }
+         .btn{
+            background:#006991;
+            color: white;
+         }
+         
+
+         #sid{
+            position:fixed;
+            height:100%;
+            background: #E8F0FE;
+         }
+
+         .marginright{
+
+           margin-right:50px;
+         }
+
+
+         .btn-primary {
+          color: #fff;
+          background-color: #006991;
+          border-color: #006991;
+               }
+
+          @media screen and (max-width: 575.98px){
+                 #sid{
+                      position:fixed;
+                      height:100%;
+                      width:7em;
+                      background-color:#f8f9fa;}
+
+
+                 .table{
+                   width:20%; }
+
+                 .report-card{
+                    margin-left:50px;
+                    width:80%;
+                    }
+                   }
+
+
+
+          @media screen and (min-width: 576px){
+                         #sid{
+                            position:fixed;
+                            height:100%;
+                            width:8.5em;
+                            background-color:#f8f9fa;
+                            }
+
+                         .report-card{
+                         width:50%;
+                         margin-left:20%;
+                         }
+                     }
+
+
+          @media screen and (min-width: 768px){
+                         #sid{
+                            position:fixed;
+                            height:100%;
+                            background-color:#f8f9fa;
+                            width:11.5em;
+                            }
+
+                         .report-card{
+                         width:50%;
+                         margin-left:20%;
+                         }
+                      }
+
+          @media screen and (min-width: 992px){
+                         #sid{
+                            position:fixed;
+                            height:100%;
+                            width:15em;
+                            background-color:#f8f9fa;
+                         }
+                         .report-card{
+                         width:50%;
+                         margin-left:20%;
+                         }
+                       }
+
+
+          @media screen and (min-width: 1200px){
+                         #sid{
+                            position:fixed;
+                            height:100%;
+                            width:18.4em;
+                            background-color:#f8f9fa;
+                         }
+                         .report-card{
+                         width:50%;
+                         margin-left:20%;
+                         }
+                      }
+
+
+
+
+        </style>
+
+
+
+
+        <!------------------------------------------------------------->
+        <!------------------------------------------------------------->
+   </head>
+      <body>
+
+          <nav class="navbar navbar-expand-lg fixed-top  navbar-light urnav">
+             <div class="container">
+                 <a class="navbar-brand text-white" href="#">URIMAS</a>
+
+                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                   <span class="navbar-toggler-icon"></span>
+                 </button>
+
+                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                 <!-- Profile notifications and logout -->
+                 {%if user.is_authenticated %}
+                    <ul class="navbar-nav ml-auto">
+                       
+                       <li class="nav-item  no-arrow mx-1">
+                           <a href="#" class="nav-link text-white " style="display:inline"> Notification<span class="badge badge-danger ml-2">{% block notification%}{% endblock %}</span></a>
+
+                          <a href="#" class="nav-link text-white" style="display:inline">{{user.username}}</a>
+
+                              <li class="nav-item dropdown" style="display:inline">
+                                 
+                                    <a class="nav-link dropdown-toggle no-arrow mx-1" href="#" id="navbarDropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:inline">
+                                          {% if user.profile_img %}
+                              <img src="{{ user.profile_img.url }}"style="display:inline,  height:10px; width:30px; border-radius:100px; "   "></a>
+                              {% else %}
+                            <a href="{% url 'img' pk=user.pk %}"><img src="{% static 'images/profile.png' %}"style="display:inline,  height:40px; width:40px;" class="img-circle ">
+                            </a>
+                            {% endif %}
+                              <!-- {% url 'img' pk=user.pk %} -->
+                                    <span class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                      <!-- <a class="dropdown-item" href="#">abatoza b'intore</a>
+                                      <a class="dropdown-item" href="#">intore zo kumukondo</a>
+                                      <div class="dropdown-divider"></div> -->
+                                      <a class="dropdown-item" href="{% url 'img' pk=user.pk %}">Change</a>
+                                      </span>
+                           </li>
+                            
+                          <a href="{%url 'account_logout'%}" class="nav-link text-white" style="display:inline">Logout</a>
+
+                        </li>
+                      
+                    </ul>
+                 {%endif%}
+                 </div>
+             </div>
+          </nav>
+
+        
+            <div class="row mt-5">
+
+                <div class="col-2">
+                   <div class="list-group" id="sid" >
+                      <div class="sid"><a  class="list-group-item "  href="{% url 'mydashboad'%}">Dashboard</a></div>
+                      <div class="sid"><a class="list-group-item "  href="{% url 'requesting' %}">Request Mission</a></div>
+                      <div class="sid"><a class="list-group-item"  href="{% url 'viewstatus'%}">View status</a></div>
+
+                     {% if user.is_superviser %}
+                     <div class="sid"><a class="list-group-item"  href="{% url 'aprove' %}" >Approve</a></div>
+                       
+                     {% endif %}
+                      <div class="sid"><a class="list-group-item"  href="{% url 'reported'%}" >Report</a></div>
+                        
+                        <div class="sid">
+                           <div class="sid" role="tab" id="questionOne">
+                              {% if user.is_staff %}
+                              <div  class=" sid form-control " data-toggle="collapse" data-target="#demo">Settings  <span class="fa fa-plus-square-o"></span> </div>
+                                
+                              {% endif %}
+                                 <div id="demo" class="collapse">
+                                       <div class="sid"><a class="list-group-item"  href="{%url 'account'%}" >Add Staff</a></div>
+                                       <div class="sid"><a class="list-group-item"  href="{% url 'category' %}" >Add Category</a></div>
+                                       <div class="sid"><a class="list-group-item"  href="{% url 'department' %}" >Add Department</a></div>
+                                       <div class="sid"><a class="list-group-item"  href="{% url 'school' %}" >Add School</a></div>
+                                       
+                                       
+                                       <div class="sid"><a class="list-group-item"  href="{% url 'role' %}" >Add Role</a></div>
+                                       <div class="sid"><a class="list-group-item"  href="{% url 'assigning' %}" >Assign supervisor to school</a></div>
+
+                                 </div>
+                           
+                          
+                           </div>
+                           
+                           </div>
+
+                          
+                       
+                        
+
+
+                       {% if  user.is_autoriser %}
+                        <div class="sid"><a class="list-group-item"  href="{% url 'authorized' %}" >Authorize</a></div>
+                       {% endif %}
+
+                     
+                   </div>
+                   
+                </div>
+                <div class="col-9 mt-3 container ">
+                   
+                   {% block messages %}
+                   {% for message in messages %}
+                   <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                     </button>
+                     {{ message }}
+                   </div>
+                 {% endfor %}
+                   {% endblock messages %}
+                      
+                  {%block content%}
+
+                  {%endblock content%}
+               </div>
+           </div>
+           
+
+                  
+         
+
+          
+                <script src="{% static 'jquery/jquery-ui.min.js' %}"></script>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+            
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+      </body>
+ </html>
+

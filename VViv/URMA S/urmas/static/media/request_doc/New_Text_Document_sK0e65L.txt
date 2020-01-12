@@ -1,0 +1,11 @@
+def RequestStatusChanging(request, pk):
+    objects = get_object_or_404(Staff , pk=pk)
+    objects1 = get_object_or_404(Mission , pk=pk)
+
+    template_name = 'pages/staff_detail.html'
+    context = {
+        'objects': objects,
+        'objects1': objects1
+    }
+    Staff.objects.filter(pk=pk).update(status='Aprove')
+    return render_to_response(template_name, context)

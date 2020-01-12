@@ -1,0 +1,215 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>{% block title %}
+       
+    {% endblock title %}</title>
+ 
+    
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      .sidebar-sticky ul li a {
+          color:black;
+          
+          width:210px;
+          align-self: auto;
+          font-family:Georgia, 'Times New Roman', Times, serif;
+          font-size: 1rem;
+          
+          
+          
+      }
+       .list-group  a:hover {
+          color:white;
+          background-color:#006991;
+          
+      }
+     
+   
+      #logo{
+        height:30px;
+        width:30px;
+
+      }
+      .btn{
+        background-color: #006991;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+   
+
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" media="screen">
+<link rel="stylesheet" href="{% static 'css/animate-css/animate.min.css' %}" media="screen">
+<link rel="stylesheet" href="{% static 'css/mycss.css' %}">
+
+<script src="{% static 'css/jquery-ui/jquery-ui.min.css' %}"></script>
+<link rel="stylesheet" href="{% static 'css/mycss.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+
+
+    
+  </head>
+  <body>
+  <div class="row">
+    <div class="container-fluid">
+        <nav class="navbar  fixed-top   ">
+
+            <a class="navbar-brand navbar-fluid col-sm-3 col-md-2 ml-0   text-white" style="display:inline; margin-right: 500px;" href="#"><img src="{% static 'images/urlogo.png'%}" alt="my logo" id="logo" class="img rounded-circle"></a>
+          
+            <!-- navbar menu -->
+            <ul class="navbar-nav px-3">
+              <li class="nav-item text-nowrap text-white">
+                  <!-- <span class="number counter mr-5">Notifications<b class="badge badge-danger ">{{notification}}</b></span> -->
+                  <span class="number counter mr-5">Notifications<b class="badge badge-danger ">{% block notification %} {%endblock%}</b></span>
+                  <!-- user profile img -->
+                {{request.user.username}}
+                    {% if user.profile_img %}
+                    <a href="{% url 'img' pk=user.pk %}">
+                        <img src="{{ user.profile_img.url }}"style="display:inline,  height:10px; width:30px; " class="img-rounded  "></a>
+                       
+                      
+                    {% endif %}
+                
+
+                    
+                  
+                    <!-- <img src="{% static 'images/profile.png' %}"style="display:inline,  height:40px; width:40px;" class="img-circle "></a> -->
+          
+                    
+          
+                {% if request.user.is_authenticated %}
+                
+                <a class="nav-link  fa fa-sign-out" href="{% url 'account_logout' %}"style="display:inline; margin-left: 15px;">Sign out</a>
+                {% endif %}
+              </li>
+            </ul>
+          </nav>
+    </div>
+
+  </div>
+<!-- messaging 
+{% if messages %}
+<span class="messages alert ">
+    {% for message in messages %}
+    <i{% if message.tags %} class="  {{ message.tags }}"{% endif %}>{{ message }}</i>
+    {% endfor %}
+</span>
+{% endif %} -->
+          <div class="row mt-5">
+              <div class="container-fluid">
+                  <div class="row">
+                    <nav class="col-md-2 d-none d-md-block  sidebar"  >
+                      <div class="side-nav sidebar-sticky" >
+
+                          <div class="list-group " id="list-tab" role="tablist" >
+
+                              <a class="list-group-item list-group-item-action " id="list-profile-list" data-toggle="list" href="{%  url 'mydashboad'%}" role="tab" aria-controls="profile">My Requests </a>
+                              <a class="list-group-item list-group-item-action " id="list-messages-list" data-toggle="list" href="{%  url 'requesting'%}" role="tab" aria-controls="messages"> Request Mission</a>
+                              <a class="list-group-item list-group-item-action " id="list-settings-list" data-toggle="list" href="{% url 'viewstatus'%}" role="tab" aria-controls="settings">View Status</a>
+                              <a class="list-group-item list-group-item-action " id="list-profile-list" data-toggle="list" href="{% url 'report' %}" role="tab" aria-controls="profile">Report</a>
+                            
+                                                              {% if request.user.is_superviser %}
+                                <a class="list-group-item list-group-item-action " id="list-home-list" data-toggle="list" href="{% url 'aprove' %}" role="tab" aria-controls="home">Aprove Request</a>
+                                                              
+
+                                <a class="list-group-item list-group-item-action " id="list-messages-list" data-toggle="list" href="{% url 'account' %}" role="tab" aria-controls="messages">Add Staff</a>
+                                <a class="list-group-item list-group-item-action " id="list-settings-list" data-toggle="list" href="{% url 'category' %}" role="tab" aria-controls="settings">Add Category</a>
+                                                            
+                                <a class="list-group-item list-group-item-action " id="list-messages-list" data-toggle="list" href="{% url 'department' %}" role="tab" aria-controls="messages">Add Department</a>
+                                <a class="list-group-item list-group-item-action " id="list-settings-list" data-toggle="list" href="{% url 'role' %}" role="tab" aria-controls="settings">Add Role</a>
+                                {% endif %}
+
+                                {% if user.is_autoriser %}
+                                <a class="list-group-item list-group-item-action " id="list-settings-list" data-toggle="list" href="{% url 'authorized' %}" role="tab" aria-controls="settings">Staff Missions</a>
+                                  
+                                {% endif %}
+                                
+                                
+                            
+                            </div>
+                            </nav>
+                   
+                   
+                   <div class="col-md-10">
+                     <!-- block conte
+                    <div class="row">
+                      <div class="col-md-2">
+                          <div class="card-body badge-danger p-5 shadow-lg">
+                              
+                            </div>
+                      </div>
+                    </div>nt where all whithin content block must been desplayed -->
+                      {% block content %}
+            
+                      {% endblock content %}
+                     <!-- block dashbord where all whithin dashboad block must been desplayed -->
+
+                      {% block dashboad %}
+                
+                     
+                      {% endblock dashboad %}
+
+
+                      {% block cards %}
+                     
+                      {% endblock cards %}
+                   </div>
+                    </div>
+                  </div>
+         
+        </div>
+
+
+        
+
+{% load static %}
+<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/main.min.js' %}"></script>
+<script src="{% static 'js/npm.js' %}"></script>
+<script src="{% static 'js/jquery-ui/jquery-ui.min.js' %}"></script>
+
+
+
+
+<!-- ========== COMMON JS FILES ========== -->
+
+
+
+
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   -->
+
+   
+</body>
+</html>
+

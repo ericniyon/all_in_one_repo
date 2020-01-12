@@ -1,0 +1,33 @@
+{% extends "appointments/calendar.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load cache %}
+
+{% block title %}{{object}} {% trans "Calendar" %}{% endblock %}
+{% block calendar_title %}{{object}} {% trans "Calendar" %}{% endblock %}
+
+{# {% cache 600 vucal CUSTOMER.pk object.pk %} #}
+{% block schedule_specific_js %}
+	startOnFirstDayOfWeek: true,
+	daysToShow: {{object.shown_days}},
+	data: "{% url 'appointments:venue_event_feed' pk=object.pk %}",
+	businessHours: {
+		{% if object.opening_time %}
+			start: {{object.opening_time.from_hour.hour}},
+		{% else %}
+			start: 8,
+		{% endif %}
+		{% if object.closing_time %}
+        	end: {{object.closing_time.to_hour.hour}},
+        {% else %}
+        	end: 17,
+        {% endif %}
+        limitDisplay: true
+	}, 
+	users: [{'id': {{object.id}}, 'name': '{{object.name|upper}}'},],
+	{% if object.allow_overlap %}
+		allowCalEventOverlap: true,
+		overlapEventsSeparate: true,
+	{% endif %}
+{% endblock %}
+{# {% endcache %} #}

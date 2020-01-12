@@ -1,0 +1,144 @@
+.ui-widget.wc-container *,
+.ui-widget.wc-container *:before,
+.ui-widget.wc-container *:after {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box; 
+}
+
+.printable .wc-header {
+	background:#fff;
+}
+
+.printable .wc-header .ui-state-active, 
+.printable .wc-header .ui-widget-content .ui-state-active, 
+.printable .wc-header .ui-widget-header .ui-state-active
+.printable .wc-header .ui-widget-content {
+  border: none;
+}
+
+.wc-user-header.printable-top {
+	text-align: left;
+}
+.venue-headers {
+	margin-bottom:15px;
+}
+.notes-table {
+	margin-top:15px;
+}
+
+.modal h4,
+.modal h5 {
+	font-weight:bold;
+}
+
+.wc-cal-event.confirmed .wc-title,
+.wc-cal-event.confirmed {
+	background-color: #2ecc71;
+}
+
+.wc-cal-event.confirmed .wc-time {
+	background-color: #29b163;
+	border-color: #29b163;
+}
+
+
+.wc-cal-event.canceled .wc-title,
+.wc-cal-event.canceled {
+	background-color: #df2e1b;
+}
+
+.wc-cal-event.canceled .wc-time {
+	background-color: #bf2717;
+	border-color: #bf2717;
+}
+
+
+.wc-cal-event.notified .wc-title,
+.wc-cal-event.notified {
+	background-color: #afa96d;
+}
+
+.wc-cal-event.notified .wc-time {
+	background-color: #938D56;
+	border-color: #938D56;
+}
+
+
+.wc-cal-event.noshow .wc-title,
+.wc-cal-event.noshow {
+	background-color: #555555;
+}
+
+.wc-cal-event.noshow .wc-time {
+	background-color: #444444;
+	border-color: #444444;
+}
+
+
+.wc-cal-event.showed .wc-title,
+.wc-cal-event.showed {
+	background-color: #800080;
+}
+
+.wc-cal-event.showed .wc-time {
+	background-color: #4B0082;
+	border-color: #4B0082;
+}
+
+.dayview .wc-header .ui-state-active {
+	background:inherit;
+	border:inherit;
+	color:inherit;
+}
+
+td.wc-day-column.bottom {
+  padding:0px;
+}
+
+td.wc-day-column.empty-notes {
+  padding:10px;
+}
+
+.single-bottom-note.list-group-item {
+  padding: 4px;
+  margin: -1px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  font-weight:normal;
+  font-size:13px;
+}
+
+
+.single-top-note.list-group-item {
+  padding: 4px;
+  background-color: transparent;
+  border: none;
+  font-weight:normal;
+  font-size:13px;
+}
+
+.badge.icon {
+  display:none;
+  color:#fff;
+  cursor: pointer;
+}
+
+.editable-note {
+	text-decoration: none!important;
+	color:inherit!important;
+}
+
+.note-item:hover .badge.icon {
+  display:block;
+}
+
+.single-top-note.list-group-item.featured-note {
+	background-color: #d9edf7;
+	color:#ff0000;
+    width: 95%;
+    border: 1px solid whitesmoke;
+    padding:10px;
+    margin-bottom: -10px;
+    text-align: center;
+}

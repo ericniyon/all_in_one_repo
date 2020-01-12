@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %}{% trans "Edit Schedule Script" %} | {{site.name}}{% endblock %}
+
+{% block main_content %}
+	{# {% cache 1200 vuscript CUSTOMER.pk object.pk %} #}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+	    {% block calendar_title %}{% trans "Edit Schedule Script" %}{% endblock %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+	    <div class="row" id="create-event no-padding">
+	    	<div class="col-md-8 no-padding">
+	    		{% include "venues/snippets/script_instructions.html" %}
+	    		{% crispy form %}
+	    	</div>
+	    	<div class="col-md-4 bottom-20">
+	    	  <p>{% trans "You can customize what we tell your clients, via SMS (text message), or email. Our computers" %} <strong>{% trans "automatically insert" %}</strong> {% trans "per-appointment information (like date/time) into these scripts to make your messages." %}</p>
+	    	  <h5>{% trans "What describes your needs best?" %}</h5>
+	    	  <ol>
+	    	    <li>{% trans "Do you" %} <strong>{% trans "want the minimum setup" %}</strong> {% trans "possible? Our system automatically has a default script which mentions each appointment's date and times. You're done!" %}</li>
+	    	    <li>{% trans "Do you" %} <strong>{% trans "want to have just one customized script that you use for everyone?" %}</strong> {% trans "(We can fill per-appointment dates and times into it.) If so, edit your" %} <a href="{% url 'customer:script' %}">{% trans "Default Script" %}</a></li>
+	    	    <li>{% trans "Do you" %} <strong>{% trans "want to have messages specific to a location or staff member?" %}</strong> {% trans "The easiest way to do that is to make a" %} <a href="{% url 'venues:list' %}">{% trans "Schedule" %}</a> {% trans "for that location/staff member. (You can create extra schedules under your Schedules screen). Then, use schedule custom scripts as you are doing right now." %}</li>
+	    	  </ol>
+	    	</div>
+	    	<div class="clearfix"></div>
+	    </div>
+	  </div>
+	</div>
+	{# {% endcache %} #}
+{% endblock %}

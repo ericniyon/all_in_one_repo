@@ -1,0 +1,127 @@
+{% extends "front-base.html" %}
+{% load staticfiles %}
+{% load compress %}
+{% load i18n %}
+{% load cache %}
+
+{% block title %}{{site.name}} | {% trans "Appointment Reminder Software" %}{% endblock %}
+
+{% block all_content %} 
+{% cache 3600 home CUSTOMER.pk request.user.username %}
+<div class="row content-section bluish-bg">
+  <div class="container">
+    <div class="col-md-8">
+      <h3>{% trans "Your clients will never miss another appointment" %}</h3>
+      <p>{% trans "AppointWare sends out automated reminders to your clients, so that they come on time and you get paid." %}</p>
+      <p>
+        {% blocktrans %}
+        If you run a service business such as a salon, dental clinic, or a law firm then you know that your time is extremely valuable.  You have to keep a strict schedule so that your can earn more, because <strong>every minute that you do not spend with a client means less money</strong> for your business.
+        {% endblocktrans %}
+      </p>
+      <p>
+        {% blocktrans %}
+        Your clients are also busy people and they sometimes forget about their appointments with you.  This causes disruptions in your schedule, costs you revenue, and may hurt your professional relationship with clients.  AppointWare helps you solve this problem but letting you easily remind clients of their appointments.  This <strong>increases both revenue and customer satisfaction</strong>.
+        {% endblocktrans %}
+      </p>
+    </div>
+    <div class="col-md-4">
+      {% include 'core/snippets/benefits.html' %}
+      <br/>
+      <p>
+        {% if request.user.is_authenticated %}
+          {% if CUSTOMER %}
+            <a href="{% url 'dashboard' %}" class="btn btn-lg btn-primary ">{% trans "Dashboard" %}</a>
+          {% else %}
+            <a href="{% url 'new_customer' %}" class="btn btn-lg btn-primary ">{% trans "Set Up Account" %}</a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'account_signup' %}" class="btn btn-lg btn-primary ">{% trans "Get Started Now" %}</a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+<div class="row content-section">
+  <div class="container">
+    <div class="col-md-12">
+      <p>
+        {% blocktrans %}
+        AppointWare lets you <strong>send reminders to your clients automatically</strong>!  On our easy-to-use website, you can simply type in the client's contact information and appointment details and we shall do the rest.   We send out appointment reminders by email and/or by SMS.  That's it - there is no special software or hardware to buy and install, just use your regular computer or phone.
+        {% endblocktrans %}
+      </p>
+      <p>
+        {% blocktrans %}
+        Our customers have reported that using AppointWare results in <strong>decreased cancellations and no-shows</strong>.  Many customers save a full-time employee (or more) who used to spend time with bulky phone calls and ridiculous spreadsheets to handle appointment reminders manually.
+        {% endblocktrans %}
+      </p>
+      <p>
+        {% blocktrans %}
+        Perhaps after a client's appointment you want to <strong>remind them to come back in one month, or one year</strong>?  AppointWare let's you do that as well!  Auto-magically.
+        {% endblocktrans %}
+      </p> 
+    </div>
+    <div class="col-md-12 text-center">
+      <br/>
+      <p>
+        {% if request.user.is_authenticated %}
+          {% if CUSTOMER %}
+            <a href="{% url 'dashboard' %}" class="btn btn-lg btn-success">{% trans "Dashboard" %}</a>
+          {% else %}
+            <a href="{% url 'new_customer' %}" class="btn btn-lg btn-success">{% trans "Set Up Account" %}</a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'account_signup' %}" class="btn btn-lg btn-success">{% trans "Start Your Free Trial" %}</a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+<a name="who-can-use-it" id="who-can-use-it"></a>
+<div class="row content-section grey-bg">
+  <div class="container">
+    <div class="col-md-12">
+      <h3>{% trans "Who can use AppointWare?" %}</h3>
+      <p>
+        {% blocktrans %}
+        AppointWare is essential for any kind of business that provides personal or professional services.  We will help you spend more time actually providing your service (meaning more revenue for you) than wasting time on the phone managing your clients' scheduling.  Some of the types of businesses that can definitely benefit from using AppointWare include health clinics, law firms, hair salons, massage therapy practices, auto repair business, and many more... some landlords even use AppointWare to remind tenants to pay the rent!
+        {% endblocktrans %}
+      </p>
+      <p>
+        {% blocktrans %}
+        Additionally, businesses that typically go to their customers (instead of them coming to you) can save a lot of time and money by using our automated reminders to prevent wasted trips.  These are businesses such as exterminators, cleaners, repairs, computer networking/installation, and the like.
+        {% endblocktrans %}
+      </p>
+      <p>
+        {% trans "AppointWare is a great choice for" %}:
+        <ul>
+          <li><a href="/doctors">{% trans "doctors and health professionals" %}</a></li>
+          <li><a href="/lawyers">{% trans "lawyers" %}</a></li>
+          <li><a href="/beauty-salons">{% trans "beauty salons" %}</a></li>          
+          <li><a href="/hair-salons">{% trans "hair salons" %}</a></li>          
+          <li><a href="/massage-therapists">{% trans "massage therapy practices" %}</a></li>
+          <li>{% trans "electricians" %}</li>
+          <li>{% trans "auto repair businesses" %}</li>
+          <li>{% trans "landlords" %}</li>
+          <li>{% trans "cleaners" %}</li>
+          <li>{% trans "and many others" %}</li>
+        </ul>
+      </p>
+    </div>
+    <div class="col-md-12 text-center">
+      <br/>
+      <p>
+        {% if request.user.is_authenticated %}
+          {% if CUSTOMER %}
+            <a href="{% url 'dashboard' %}" class="btn btn-lg btn-success">{% trans "Dashboard" %}</a>
+          {% else %}
+            <a href="{% url 'new_customer' %}" class="btn btn-lg btn-success">{% trans "Set Up Account" %}</a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'account_signup' %}" class="btn btn-lg btn-success">{% trans "Start Your Free Trial" %}</a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+{% endcache %}
+{% endblock %}

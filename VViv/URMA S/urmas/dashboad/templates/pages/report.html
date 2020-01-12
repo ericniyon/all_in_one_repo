@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+  Missions Management System
+{% endblock title %}
+
+{% block notification %}
+  {{ notification }}
+  {% endblock notification %}
+
+{% block content %}
+
+
+{% with url_name=request.resolver_match.url_name  %}
+{% if url_name == 'report' %}
+  <form action="" method="POST" enctype="multipart/form-data" autocomplete="off" >
+    {% csrf_token %}
+    {{ reporting|crispy }}
+    <button type="submit" class="btn btn-sm btn-pill"> Report </button>
+  </form>
+ 
+
+{% elif url_name  == 'reported' %}
+
+<div class="row">
+  <div class="col-md-10">
+     <div class="card">
+      <div class="card-header">
+       <h6>Reported Missions</h6>
+      </div>
+      <div class="card-body">
+          <table class="table table-lg  d-lg-table dataTables_wrapper">
+              <thead>
+                <tr>
+                  <th>Report Docs</th>
+                  <th>Report Note</th>
+    
+                </tr>
+              </thead>
+              {% for report in reports %}
+              <tbody>
+                 <tr onclick="document.location='{% url 'details_repo' report.pk %}'">
+                   <td> <span> {{ report.file}} </span> </td>
+                   <td> <span> {{ report.note|slice:":50"}} </span> </td>
+    
+                 </tr>
+              {% endfor %}
+                 
+              </tbody>
+            </table>
+      </div>
+     </div>
+  </div>
+  <div class="col-md-2 ">
+      <a type="button"  href="{% url 'report'  %}" style="background:white; color: black;" class="btn btn-link btn-outline-dark"> <span style="color:green;  " class="fa fa-plus "></span> Generate Report</a>
+    </div>
+</div>
+{% elif  url_name == 'details_repo' %}
+<embed src=" {{ reportdocs.file.url }} " type="application/pdf"   height="700px" width="1000">
+ 
+{% endif %}
+{% endwith %}
+
+
+
+{% endblock content %}

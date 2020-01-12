@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chart</title>
+</head>
+<body>
+    
+<div id="chart_id" style="height: 350px; width: 400px;">
+
+</div>
+
+
+
+
+
+
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+        // document.write('funny')
+    // document.addEventListener('DOMContentLoader', function(){
+        Highcharts.chart('chart_id',{
+            chart:{
+                type:'column'
+            },
+            title:{
+                text:'Complete High chart'
+            },
+            subtitle:{
+                title:'Testing Haghchart Chart'
+            },
+                
+            xAxis:{
+                categories: ['Snacks', 'Vegetables', ]
+                
+            },
+            yAxis:{
+                title:{
+                    text:['Generals', 'Authomated']
+
+                }
+            },
+            plotOptions:{
+                series:{
+                    borderWidth:0,
+                    dataLabels:{
+                        enabled:true,
+                        format:'{point.y:.1f}',
+                        
+                    }
+                }
+            },
+
+            
+            series:[{
+                // type:'line',
+                name:'Un_uproved',
+                data:['http://www.knowstack.com/webtech/charts_demo/data.json'],
+                color:'red'
+            },{
+                name:'Uproved',
+                data:['http://www.knowstack.com/webtech/charts_demo/data.json'],
+                color:'green' 
+            }]
+
+        })
+    // })
+
+
+
+    
+    </script>
+</body>
+</html>

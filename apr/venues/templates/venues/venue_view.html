@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %}{{object}} {% trans "Schedule details" %} | {{site.name}}{% endblock %}
+{% block main_content %}
+	{# {% cache 1200 vuview CUSTOMER.pk object.pk %} #}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+	    {% block calendar_title %}{{object}} {% trans "Schedule details" %}{% endblock %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+	  	<div class="col-md-12 text-right">
+	  		<a href="{% url 'venues:edit' pk=object.pk %}" class="btn btn-sm btn-primary">{% trans "Edit" %}</a>
+	  		<a href="{% url 'venues:delete' pk=object.pk %}" class="btn btn-sm btn-danger">{% trans "Delete" %}</a>
+	  		<br>
+	  		<br>
+	  	</div>
+	  	<div class="table-responsive">
+	  	  <table class="table">
+	  	  	<tr>
+	  	  		<th>{% trans "Name" %}</th>
+	  	  		<td width="80%">{{object}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Show in main calendar" %}</th>
+	  	  		<td width="80%">{{object.main_calendar}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Number of days to show in calendar" %}</th>
+	  	  		<td width="80%">{{object.get_shown_days_display}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Opening Hours" %}</th>
+	  	  		<td width="80%">
+	  	  			<ul class="list-unstyled">
+	  	  			{% for otime in object.opening_hours %}
+	  	  			 <li>
+	  	  			 	<strong>{{otime.get_weekday_display}}</strong>: 
+	  	  			 	{% if otime.from_hour and otime.to_hour %}
+		  	  			 	{{otime.from_hour}} {% trans "to" %} {{otime.to_hour}}
+		  	  			{% else %}
+		  	  				{% trans "Closed" %}
+	  	  			 	{% endif %}
+	  	  			 </li>
+	  	  			{% endfor %}
+	  	  			</ul>
+	  	  		</td>
+	  	  	</tr>
+	  	  </table>
+	  	</div>
+	  	
+	  </div>
+	</div>	
+	{# {% endcache %} #}
+{% endblock %}
+{% block extrajs %}{% endblock %}

@@ -1,0 +1,20 @@
+{% load i18n %}
+<p>{% trans "A client has just told us they want to cancel their appointment, and we're letting you know." %}</p>
+<p>
+{% trans "Client name:" %} {{client.get_full_name|title}}<br/>
+{% trans "Client contact info:" %}<br/>
+    {{client.phone}}<br/>
+    {{client.email}}
+</p>
+
+<p>
+{% trans "Appointment Date:" %} {{event.start|date:"l, F j"}}<br/>
+{% trans "Appointment Time:" %} {{event.start|date:"fA"}}<br/>
+{% trans "Appointment Status: Canceled" %}
+</p>
+
+<p>{% trans "This status has been automatically updated in the software." %}</p>
+
+<p>{% trans "Regards," %}</p>
+<br/>
+<p>AppointWare</p>

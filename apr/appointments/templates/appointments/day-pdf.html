@@ -1,0 +1,167 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load compress %}
+{% load cache %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{this_customer.name|default_if_none:"AppointWare"}}</title>
+    <!-- Bootstrap core CSS -->
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/readable.bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'jquery-ui/jquery-ui.min.css' %}" media="all" type="text/css" />
+    <link rel="stylesheet" href="{% static 'jquery-week-calendar/css/jquery.weekcalendar.css' %}" media="all" type="text/css" />
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/week-calendar.css' %}" />
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/pdf.css' %}" />
+
+    {% include 'core/snippets/tag-color-styles.html' with CUSTOMER=this_customer %}
+
+    {% if this_customer.use_no_background_print %}
+      <style>
+        .wc-cal-event {
+          background-color: transparent!important;
+          color:#333;
+        }
+        .wc-cal-event .wc-title {
+          background-color: transparent!important;
+        }
+        .wc-cal-event.ui-corner-all {
+          border: 1px solid #999;
+        }
+
+        .single-top-note.list-group-item.featured-note {
+          background-color:transparent;
+          border:none;
+        }
+      </style>
+    {% endif %}
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+      
+      <div class="row">
+      <div class="col-md-12">
+        <h5 class="text-center">{{this_customer.name|upper}}</h5>
+        <div id="calendar" class="printable row center-block"></div>
+      </div>
+      </div>
+
+
+    </div> <!-- /container -->
+    
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.js' %}"></script>
+    <script src="{% static 'jquery-week-calendar/js/jquery.weekcalendar.js' %}"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>    
+    <script type='text/javascript'>
+      $(document).ready(function() {  
+
+        var eventData = {
+          events: [
+            {% for item in data %}
+              {
+                "status": "{{item.status}}",
+                "tag": "{{item.tag}}", 
+                "start": new Date("{{ item.start }}"), 
+                "body": "{% filter escapejs %}{{item.body|default_if_none:""}}{% endfilter %}", 
+                "end": new Date("{{ item.end }}"), 
+                "title": "{% filter escapejs %}{{item.title|default_if_none:""}}{% endfilter %}", 
+                "userId": {{item.userId}}, 
+                "id": {{item.id}}, 
+                "clientId": {% if item.clientId %}{{item.clientId}}{% else %}""{% endif %}
+              },
+            {% endfor %}
+          ]
+        } ;    
+
+        var this_date = new Date('{{todays_date|date:"m/d/Y"}}');  
+
+        $('#calendar').weekCalendar({
+          date: this_date,
+          timeslotsPerHour: 4,
+          timeslotHeight: 15,
+          defaultEventLength: 4,
+          displayFreeBusys: true,
+          defaultFreeBusy: {free: true},
+          readonly : true,
+          firstDayOfWeek: 1,
+          showHeader: false, 
+          textSize:10,       
+          height: function($calendar) {
+            return $('table.wc-time-slots').outerHeight() + $('.ui-widget-content.wc-header').outerHeight();
+          },
+          minBodyHeight: 1600, 
+          startOnFirstDayOfWeek: false,
+          daysToShow: 1,
+          data: eventData,
+          businessHours: {
+            {% if this_customer.global_opening_time.from_hour.hour %}
+              start: {{this_customer.global_opening_time.from_hour.hour}},
+            {% else %}
+              start: 8,
+            {% endif %}
+            {% if this_customer.global_opening_time.from_hour.hour %}
+              end: {{this_customer.global_closing_time.to_hour.hour}},
+            {% else %}
+              end: 17,
+            {% endif %}
+            limitDisplay: true
+          },  
+          users: [
+            {% for venue in venues %}
+            {
+              'id': {{venue.id}},
+              'name': '{{venue.name|upper}}'
+            },
+            {% endfor %}
+          ],  
+          {% if this_customer.allow_overlap %}
+            allowCalEventOverlap: true,
+            overlapEventsSeparate: true,
+          {% endif %}
+          showAsSeparateUser: true,             
+          getUserId: function(user, index, calendar) {
+              return user.id;
+          },
+          getUserName: function(user, index, calendar) {
+              return user.name;
+          },
+          eventRender: function(calEvent, $event) {
+            $event.addClass(calEvent.status);
+            $event.addClass(calEvent.tag);
+          },
+          eventBody: function(calEvent, $event) {
+            var data = $("#calendar").weekCalendar('formatTime', calEvent.start) + " " + calEvent.title;
+            if (calEvent.body) {
+              data = data + "<br/>" + calEvent.body;  
+            }           
+            return data;
+          },
+          calendarAfterLoad: function() {
+            loadNotes();
+          },
+        });
+
+      });
+
+      function loadNotes() {
+        $('.ui-widget-content.wc-header tr:last').after('{% filter escapejs %}{% include "notes/snippets/top-full.html" %}{% endfilter %}');
+        $('.wc-time-slots tr:last').after('{% filter escapejs %}{% include "notes/snippets/bottom-full.html" %}{% endfilter %}');     
+      }
+    </script>
+    
+  </body>
+</html>

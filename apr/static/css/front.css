@@ -1,0 +1,138 @@
+/* Header */
+nav {
+  margin-top:15px;
+}
+
+.navbar-default {
+  background: none;
+  border: none;
+}
+.navbar-default .navbar-brand {
+  color: #333333;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #232225;
+}
+.navbar-default .navbar-text {
+  color: #333333;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #333333;
+}
+.navbar-default .navbar-nav > li > a.btn-success {
+  color: #fff;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #232225;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #232225;
+  /*background-color: #207ce5;*/
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #232225;
+  /*background-color: #207ce5;*/
+}
+.navbar-default .navbar-toggle {
+  /*border-color: #207ce5;*/
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  /*background-color: #207ce5;*/
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #333333;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #333333;
+}
+.navbar-default .navbar-link {
+  color: #333333;
+}
+.navbar-default .navbar-link:hover {
+  color: #232225;
+}
+
+.navbar-brand {
+  font-size: 30px;
+  font-weight: bold;
+  background: url('../img/logo.png') 0px center no-repeat;
+  background-size: 191px;
+  text-indent: -9999px;
+  width: 191px;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #333333;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #232225;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #232225;
+    /*background-color: #207ce5;*/
+  }
+}
+
+/* General */
+.container {
+  max-width:1100px;
+}
+
+.content-section {
+  background-color: #FFFFFF;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  min-height: 300px;
+  padding: 50px 0;
+}
+
+.content-section.normalfy {
+  min-height: 20px;
+  padding: 0;
+}
+
+.content-section.page {
+  min-height: 20px;
+  padding-top: 0;
+  padding-bottom:60px;
+}
+
+.grey-bg {
+  background-color: #F9F9F9;
+}
+
+.bluish-bg {
+  background-color: #E9EEF1;
+}
+
+#main-page {
+  min-height:600px;
+}
+
+#main-page .content-section {
+  margin-bottom:30px;
+  padding:0px;
+}
+
+#sidebar {
+  margin-top:20px;
+}
+
+.widget {
+  margin-bottom:20px;
+  border-bottom:1px solid #f9f9f9;
+}
+
+.intl-tel-input {
+  display:block!important;
+}
+
+/* Footer */
+footer {
+  background-color: #293941;
+  color: #768187;
+  padding: 32px 0 64px;
+}

@@ -1,0 +1,131 @@
+
+{% extends "dashboard/dashboard.html" %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Django Highcharts </title>
+</head>
+<style>
+</style>
+
+<body>
+  
+  {% block content %}
+ 
+
+
+
+<div class="row ">
+  <div class="col-md-5 ml-3">
+      <div id="container" style="height: 505px; width: 500px"></div>
+  </div>
+  <div class="col-md-4 ml-5">
+      <div id="peiChart" style="height: 500px; width: 500px"  ></div>
+
+  </div>
+</div>
+
+  
+  
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'ADMIN Chart '
+        },
+        xAxis: {
+            
+            categories: [
+              {% for entry in dataset %}'Class'{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        },
+        series: [
+
+        {
+            name: 'Achieved',
+            data: [
+              {% for entry in dataset %}{{ entry.survived_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            
+        },{
+            name: 'Not Achieved',
+            data: [
+              {% for entry in dataset %}{{ entry.not_survived_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            
+        }, {
+            name: 'Pending',
+            data: [
+              {% for entry in dataset %}{{ entry.pending_results }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            
+        },
+        
+        
+       
+
+
+        ]
+    });
+
+
+
+
+
+
+
+
+    Highcharts.chart('peiChart', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'ADMIN Chart '
+        },
+        xAxis: {
+            
+            categories: [
+              {% for entry in dataset %}'Class'{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        },
+        series: [
+
+        {
+            name: 'Achieved',
+            data: [
+              {% for entry in dataset %}{{ entry.survived_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            
+        },{
+            name: 'Not Achieved',
+            data: [
+              {% for entry in dataset %}{{ entry.not_survived_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            
+        }, {
+            name: 'Pending',
+            data: [
+              {% for entry in dataset %}{{ entry.pending_results }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ],
+            
+        },
+        
+        
+       
+
+
+        ]
+    });
+  </script>
+
+
+<div>
+  
+</div>
+{% endblock content %}
+</body>
+</html>

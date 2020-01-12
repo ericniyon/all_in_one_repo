@@ -1,0 +1,208 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+  <!-- Client Section-->
+  <section class="client no-padding-top">
+    <div class="container-fluid">
+      <div class="row">
+
+       <!--if user is from super level-->
+      {% if user.user_profile.role == 3 %}
+
+           <div class="container text-center">
+              <div class="col-lg-12 bg-white p-3 mb-2">
+                  {% comment %}TODO: make date dynamic {% endcomment %}
+                  <h3>Rwamagana District Human Security Issues - November 2019 </h3>
+              </div>
+           </div>
+           {% for foo in achieved_total %}
+
+              <div class="col-lg-6">
+                  <div class="overdue card">
+                    <div class="card-close">
+                       <div class="dropdown">
+    <!--                {#<button type="button" id="closeCard3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>#}-->
+    <!--                {# <div aria-labelledby="closeCard3" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>#}-->
+                       </div>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>{{foo.kpi__name}} &nbsp; &nbsp; <small class="font-weight-bold mr-2">Total: {{ foo.achieved|add:foo.pending }}</small>
+    <!--{#                  {% if user.user_profile.role == 3 %}#}-->
+                            <small class="font-weight-bold"><a href="{% url 'kpi-detail' foo.kpi_id  %}">View District Status</a></small>
+    <!--{#                  {% endif %}#}-->
+                        </h5>
+    <!--{#              <div class="number text-center">{{ r.achieved }}<br><span class="text-danger">{{ r.pending}}</span> <br>{{ r.achieved|add:r.pending }}</div>#}-->
+
+    <!--{#                <canvas id="myChart" width="50" height="50"></canvas>#}-->
+                        <div class="statistics col-lg-12 col-12">
+                            <div class="statistic d-flex justify-content-between bg-white has-shadow py-2">
+                                 <div class="d-flex justify-content-center">
+                                    <div class="icon bg-green"><i class="fa fa-check"></i></div>
+                                    <div class="text"><strong>{{ foo.achieved }}</strong><br><small>Ibyakozwe</small></div>
+                                 </div>
+                                 <div class="d-flex justify-content-center">
+                                    <div class="icon bg-red"><i class="fa fa-times"></i></div>
+                                    <div class="text"><strong>{{ foo.pending}}</strong><br><small>Ibisigaye</small></div>
+                                 </div>
+                            </div>
+
+    <!--{#                    <div class="col-lg-12 col-12 ml-1">#}-->
+    <!--{#                        <div class="d-flex justify-content-center mb-0" id="Sarah_chart_div{{ r.id }}" style="border: 1px solid #FFF"></div>#}-->
+    <!--{#                    </div>#}-->
+                         </div>
+    <!--{#                <div class="statistics col-lg-6 col-12">#}-->
+    <!--{#                    <div id="Sarah_chart_div{{ r.id }}" style="border: 1px solid #ccc"></div>#}-->
+    <!--{#                </div>#}-->
+
+                     </div>
+                  </div>
+              </div>
+           {% endfor %}
+      {% else %}
+
+      <!--if user is from sector-->
+      {% if user.user_profile.role == 1 %}
+          <div class="container text-center">
+              <div class="col-lg-12 bg-white p-3 mb-2">
+                  <h3>{{user.user_profile.sector}} Sector Human Security issues </h3>
+              </div>
+           </div>
+           {% for foo in seed_sector %}
+              <div class="col-lg-6">
+                  <div class="overdue card">
+                      <div class="card-body">
+                        <h5>{{foo.kpi__name}} &nbsp; &nbsp; <small class="font-weight-bold mr-2">Total: {{ foo.achieved|add:foo.pending }}</small>
+                            <small class="font-weight-bold"><a href="#graph sector">View Graph</a></small>
+                        </h5>
+                        <div class="statistics col-lg-12 col-12">
+                            <div class="statistic d-flex justify-content-between bg-white has-shadow py-2">
+                                 <div class="d-flex justify-content-center">
+                                    <div class="icon bg-green"><i class="fa fa-check"></i></div>
+                                    <div class="text"><strong>{{ foo.achieved }}</strong><br><small>Ibyakozwe</small></div>
+                                 </div>
+                                 <div class="d-flex justify-content-center">
+                                    <div class="icon bg-red"><i class="fa fa-times"></i></div>
+                                    <div class="text"><strong>{{ foo.pending}}</strong><br><small>Ibisigaye</small></div>
+                                 </div>
+                            </div>
+                         </div>
+                     </div>
+                  </div>
+              </div>
+           {% endfor %}
+      {% else %}
+
+          <!--  if user is from district -->
+          <div class="container text-center">
+            <div class="col-lg-12 bg-white p-3 mb-2">
+             {% comment %}TODO: make date dynamic {% endcomment %}
+             <h3>Rwamagana District Human Security Issues - November 2019 </h3>
+            </div>
+          </div>
+
+      {% for foo in achieved_total %}
+
+          <div class="col-lg-6">
+            <div class="overdue card">
+             <div class="card-close">
+              <div class="dropdown">
+<!--                <button type="button" id="closeCard3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>-->
+<!--                <div aria-labelledby="closeCard3" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>-->
+              </div>
+            </div>
+            <div class="card-body">
+              <h5>{{foo.kpi__name}} &nbsp; &nbsp <small class="font-weight-bold mr-2">Total: {{ foo.achieved|add:foo.pending }}</small>
+<!--{#                  {% if user.user_profile.role == 3 %}#}-->
+                    <small class="font-weight-bold"><a href="{% url 'kpi-detail' foo.kpi_id  %}">View District Status</a></small>
+<!--{#                  {% endif %}#}-->
+              </h5>
+<!--{#              <div class="number text-center">{{ r.achieved }}<br><span class="text-danger">{{ r.pending}}</span> <br>{{ r.achieved|add:r.pending }}</div>#}-->
+
+<!--{#                <canvas id="myChart" width="50" height="50"></canvas>#}-->
+
+                <div class="statistics col-lg-12 col-12">
+                  <div class="statistic d-flex justify-content-between bg-white has-shadow py-2">
+                      <div class="d-flex justify-content-center">
+                        <div class="icon bg-green"><i class="fa fa-check"></i></div>
+                        <div class="text"><strong>{{ foo.achieved }}</strong><br><small>Ibyakozwe</small></div>
+                      </div>
+                      <div class="d-flex justify-content-center">
+                        <div class="icon bg-red"><i class="fa fa-times"></i></div>
+                        <div class="text"><strong>{{ foo.pending}}</strong><br><small>Ibisigaye</small></div>
+                      </div>
+                  </div>
+
+<!--{#                    <div class="col-lg-12 col-12 ml-1">#}-->
+<!--{#                        <div class="d-flex justify-content-center mb-0" id="Sarah_chart_div{{ r.id }}" style="border: 1px solid #FFF"></div>#}-->
+<!--{#                    </div>#}-->
+
+                </div>
+<!--{#                <div class="statistics col-lg-6 col-12">#}-->
+<!--{#                    <div id="Sarah_chart_div{{ r.id }}" style="border: 1px solid #ccc"></div>#}-->
+<!--{#                </div>#}-->
+
+            </div>
+          </div>
+        </div>
+          {% endfor %}
+
+          {% endif %}
+
+            <!--{#        {% for r in results %}#}-->
+            <!--{##}-->
+            <!--{#        <div class="col-lg-6">#}-->
+            <!--{#          <div class="overdue card">#}-->
+            <!--{#            <div class="card-close">#}-->
+            <!--{#              <div class="dropdown">#}-->
+            <!--{#                <button type="button" id="closeCard3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>#}-->
+            <!--{#                <div aria-labelledby="closeCard3" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>#}-->
+            <!--{#              </div>#}-->
+            <!--{#            </div>#}-->
+            <!--{#            <div class="card-body">#}-->
+            <!--{#              <h5>{{r.kpi}} &nbsp; &nbsp; <small class="font-weight-bold mr-2">Total: {{ r.achieved|add:r.pending }}</small>#}-->
+            <!--{#                  {% if user.user_profile.role == 3 or user.user_profile.role == 2  %}#}-->
+            <!--{#                    <small class="font-weight-bold"><a href="{% url 'kpi-detail' r.kpi.id  %}">View all Sectors Status</a></small>#}-->
+            <!--{#                  {% endif %}#}-->
+            <!--{#              </h5>#}-->
+            <!--{#              <div class="number text-center">{{ r.achieved }}<br><span class="text-danger">{{ r.pending}}</span> <br>{{ r.achieved|add:r.pending }}</div>#}-->
+            <!--{##}-->
+            <!--{#                <canvas id="myChart" width="50" height="50"></canvas>#}-->
+            <!--{##}-->
+            <!--{#                <div class="statistics col-lg-12 col-12">#}-->
+            <!--{#                  <div class="statistic d-flex justify-content-between bg-white has-shadow py-2">#}-->
+            <!--{#                      <div class="d-flex justify-content-center">#}-->
+            <!--{#                        <div class="icon bg-green"><i class="fa fa-check"></i></div>#}-->
+            <!--{#                        <div class="text"><strong>{{ r.achieved }}</strong><br><small>Ibyakozwe</small></div>#}-->
+            <!--{#                      </div>#}-->
+            <!--{#                      <div class="d-flex justify-content-center">#}-->
+            <!--{#                        <div class="icon bg-red"><i class="fa fa-times"></i></div>#}-->
+            <!--{#                        <div class="text"><strong>{{ r.pending}}</strong><br><small>Ibisigaye</small></div>#}-->
+            <!--{#                      </div>#}-->
+            <!--{#                  </div>#}-->
+            <!--{##}-->
+            <!--{#                    <div class="col-lg-12 col-12 ml-1">#}-->
+            <!--{#                        <div class="d-flex justify-content-center mb-0" id="Sarah_chart_div{{ r.id }}" style="border: 1px solid #FFF"></div>#}-->
+            <!--{#                    </div>#}-->
+            <!--{##}-->
+            <!--{#                </div>#}-->
+            <!--{#                <div class="statistics col-lg-6 col-12">#}-->
+            <!--{#                    <div id="Sarah_chart_div{{ r.id }}" style="border: 1px solid #ccc"></div>#}-->
+            <!--{#                </div>#}-->
+            <!--{##}-->
+            <!--{#            </div>#}-->
+            <!--{#          </div>#}-->
+            <!--{#        </div>#}-->
+            <!--{##}-->
+            <!--{#        {% endfor %}#}-->
+      {% endif %}
+
+
+      </div>
+    </div>
+  </section>
+
+
+ {% endblock %}
+

@@ -1,0 +1,38 @@
+{% load i18n %}
+<tr id="tr-bottom-notes">
+	<td class="wc-time-column-header"></td>
+	<td colspan="{{venues|length}}">
+		<table class="table table-bordered notes-table">
+			<tr>			
+				{% for venue in venues %}
+				<th>{% trans "NOTES" %}</th>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for venue in venues %}			
+				<td></td>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for venue in venues %}			
+				<td></td>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for venue in venues %}			
+				<td></td>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for venue in venues %}			
+				<td></td>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for venue in venues %}			
+				<td></td>
+				{% endfor %}
+			</tr>
+		</table>
+	</td>
+</tr>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %}{{object.get_full_name}} | {{site.name}}{% endblock %}
+{% block main_content %}
+	{# {% cache 1200 cudetailview CUSTOMER.pk object.pk %} #}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">
+	    {% block calendar_title %}{{object.get_full_name}}{% endblock %}
+	    </h3>
+	  </div>
+	  <div class="panel-body">
+	  	<div class="col-md-12 text-right">
+	  		<a href="{% url 'users:edit' pk=object.pk %}" class="btn btn-sm btn-primary">{% trans "Edit" %}</a>
+	  		<a href="{% url 'users:delete' pk=object.pk %}" class="btn btn-sm btn-danger">{% trans "Delete" %}</a>
+	  		<br>
+	  		<br>
+	  	</div>
+	  	<div class="table-responsive">
+	  	  <table class="table">
+	  	  	<tr><th colspan="2">{% trans "Client details" %}</th></tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Name" %}</th>
+	  	  		<td width="80%">{{object.get_full_name}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Phone" %}</th>
+	  	  		<td width="80%">{{object.phone}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Email" %}</th>
+	  	  		<td width="80%">{{object.email}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Client ID" %}</th>
+	  	  		<td width="80%">{{object.client_id}}</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<th>{% trans "Date of Birth" %}</th>
+	  	  		<td width="80%">{{object.birth_date}}</td>
+	  	  	</tr>
+	  	  </table>
+	  	</div>
+	  </div>
+	</div>	
+	{# {% endcache %} #}
+{% endblock %}
+{% block extrajs %}{% endblock %}

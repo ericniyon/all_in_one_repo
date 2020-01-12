@@ -1,0 +1,25 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div id="add-appointment-form" style="display:none;">{% crispy AppointmentForm AppointmentFormHelper %}</div>
+<div id="select-client">	
+	{% crispy SelectClientForm %}
+	<br>
+	<a href="javascript:void(0)" class="client-toggler btn btn-default" >{% trans "Or Add New Client" %}</a>
+	<br>
+	<a href="javascript:void(0)" class="generic-event-toggler btn btn-default" >{% trans "Or Add Event" %}</a>
+</div>
+<div id="add-client" style="display:none;">	        	
+	{% crispy AddClientForm add_client_helper %}
+	<br>
+	<a href="javascript:void(0)" class="client-toggler btn btn-default" >{% trans "Or Select Existing Client" %}</a>
+</div>
+<div id="add-generic-event" style="display:none;">	        	
+	{% crispy GenericEventForm %}
+	<br>
+	<a href="javascript:void(0)" class="generic-event-toggler btn btn-default" >{% trans "Back" %}</a>
+</div>
+<div class="extra-modal-info">
+	<div class="alert alert-info" role="alert">
+		<p><strong>{% trans "Hint:" %}</strong> {% trans "Change the time or duration by dragging the appointment after saving. Your client will be reminded of the appointment one day in advance and the morning of the appointment." %}</p>
+	</div>
+</div>

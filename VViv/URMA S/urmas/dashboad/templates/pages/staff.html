@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+    
+            {% block content %}
+        <div class="card">
+            <div class="card-header">
+                <h6 >Add Staff</h6>
+            </div>
+            <div class="card-body">
+                <form  method="post"  enctype="multipart/form-data"  autocomplete="off" novalidate>
+                    {% csrf_token %}
+
+                    {{form1|crispy}}
+                    <button class="btn btn-sm btn-success" >Save</button>
+
+
+                   
+                </form>
+                </div>
+                </div>
+        
+
+       
+        {% endblock content %}  
+    

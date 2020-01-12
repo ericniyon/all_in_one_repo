@@ -1,0 +1,1 @@
+web: gunicorn district_reporting.wsgi --log-file -

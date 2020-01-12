@@ -1,0 +1,72 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div id="appointment-info-motherload">
+	<div class="row client" id="appointment-info-box" data-appointment-id="{{object.id}}" data-event-id="{{object.event.id}}" data-client-id="{{object.client.id|default_if_none:'0'}}">
+		<div class="col-md-12 no-padding">		
+			<h4>{{object.event.start}}</h4>
+			{% if object.client %}
+			<h5>{% trans "Contact Details" %}</h5>
+			<ul class="list-unstyled">
+				<li><span class="appointment-label"><strong>{% trans "Name" %}:</strong></span> <span class="appointment-info">{{object.client.get_full_name}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Phone" %}:</strong></span> <span class="appointment-info">{{object.client.phone}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Email" %}:</strong></span> <span class="appointment-info">{{object.client.email}}</span></li>
+				{% if object.client.client_id %}
+					<li><span class="appointment-label"><strong>{% trans "Client ID" %}:</strong></span> <span class="appointment-info">{{object.client.client_id}}</span></li>
+				{% endif %}
+			</ul>
+			{% endif %}
+			<h5>{% trans "Appointment Details" %}</h5>
+			<ul class="list-unstyled">
+				<li><span class="appointment-label"><strong>{% trans "Title" %}:</strong></span> <span class="appointment-info">{{object.event.title}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Start" %}:</strong></span> <span class="appointment-info">{{object.event.start}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "End" %}:</strong></span> <span class="appointment-info">{{object.event.end}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Status" %}:</strong></span> <span class="appointment-info">{{object.get_status_display}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Schedule" %}:</strong></span> <span class="appointment-info">{{object.venue}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Created by" %}:</strong></span> <span class="appointment-info">{{object.creator.email}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Created on" %}:</strong></span> <span class="appointment-info">{{object.created_on}}</span></li>
+				<li><span class="appointment-label"><strong>{% trans "Notes" %}:</strong></span> <span class="appointment-info">{{object.event.description}}</span></li>
+			</ul>
+		</div>
+	</div>
+	<div class="row actions">
+		<div class="col-md-12 no-padding">
+			{% if object.client %}
+				<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="show-edit-contact-details">{% trans "Edit Contact Details" %}</a>
+				<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="show-edit-event-details">{% trans "Edit Appointment Details" %}</a>
+			{% else %}
+				<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="show-edit-event-details">{% trans "Edit Event Details" %}</a>
+			{% endif %}			
+			<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="delete-appointment">{% trans "Delete" %}</a>
+		</div>
+	</div>
+</div>
+<div class="row" id="edit-contact-details" style="display:none;">
+	<div class="col-md-12 no-padding">
+		{% crispy edit_client_form edit_client_helper %}
+	</div>
+</div>
+<div class="row" id="edit-event-details" style="display:none;">
+	<div class="col-md-12 no-padding">
+		{% if object.client %}
+			{% crispy event_info_form %}
+		{% else %}
+			{% crispy generic_event_form edit_generic_event_form_helper %}
+		{% endif %}
+	</div>
+</div>
+
+<div class="row" id="delete-appointment-confirmation" style="display:none;">
+	<div class="col-md-12 no-padding">
+		<form id="delete-appointment-form" action="" method="post">{% csrf_token %}
+		    <p>{% trans "Are you sure you want to delete" %} "{{ object }}"?</p>
+		    <input type="hidden" value="{{object.id}}" name="id" />
+		    <input type="submit" class="btn btn-danger" value="Confirm" />
+		</form>
+	</div>
+</div>
+
+<div class="extra-modal-info">
+	<div class="alert alert-info" role="alert">
+		<p><strong>{% trans "Hint:" %}</strong> {% trans "To adjust date/time, just close this box and drag the appointment around." %}</p>
+	</div>
+</div>

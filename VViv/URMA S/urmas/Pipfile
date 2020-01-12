@@ -1,0 +1,28 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+django = "==3.0.2"
+easy-pdf = "*"
+django-easy-pdf = "==0.1.1"
+asgiref = "==3.2.3"
+beautifulsoup4 = "==4.8.2"
+django-bootstrap4 = "==1.1.1"
+django-crispy-forms = "==1.8.1"
+html5lib = "==1.0.1"
+pillow = "==7.0.0"
+pypdf2 = "==1.26.0"
+pytz = "==2019.3"
+reportlab = "==3.5.32"
+six = "==1.13.0"
+soupsieve = "==1.9.5"
+sqlparse = "==0.3.0"
+webencodings = "==0.5.1"
+xhtml2pdf = "==0.2.3"
+
+[requires]
+python_version = "3.6"

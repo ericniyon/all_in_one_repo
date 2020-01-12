@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Albums</title>
+</head>
+<body>
+{% block content %}
+<div class="row">
+    {% for album in albums %}
+    <div class="col-md-4 offset-1">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{ album.title }}</h4>
+            </div>
+            <div class="card-body">
+             <div class="row">
+                    <div class="col-md-2">
+                    <img src="{{ album.album_logo.url }}" height="100" width="100" class="rounded-circle img-responsive">
+                </div>
+                <p>{{ album.count }}</p>
+                <div class="col-md-8 offset-2">
+                    <h4>{{ album.artist |slice:":15"}}</h4>
+                    <a href="{% url  'album_details' album.id %}  " class="btn btn-sm btn-danger">More >></a>
+                    
+                </div>
+             </div>
+            </div>
+        </div>
+    </div>
+        
+
+
+    {% endfor %}
+    </div>
+{% endblock content %}
+</body>
+</html>

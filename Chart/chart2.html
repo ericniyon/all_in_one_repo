@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+function draw_chart() {
+    var url="https://jsonplaceholder.typicode.com/posts";
+    $.getJSON(url,
+        function(data1){
+            /** Declare options after success callback. */
+            var options={
+                chart: {
+                     renderTo: 'container',
+                     type: 'line'
+                },
+                xAxis:{
+                     type: 'datetime'
+                },
+                yAxis: {
+                     title: { text: 'test'}
+                }, 
+                series:[{
+                    data:data1.result[0].dayactivity,
+                    name: "name"
+                }]
+           };
+
+           /** Create a chart instance and pass options. */
+           var chart = new Highcharts.Chart(options);
+       }
+    );
+}
+</script>
+
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+</body>
+</html>

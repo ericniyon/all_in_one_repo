@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    
+<div class="card">
+    <div class="card-header">
+      <h6 class="text-white">Mission status</h6>
+    </div>
+    <div class="">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Requester Name</th>
+            <!-- <th scope="col">Superviser</th> -->
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        
+        
+        {% for file in authorize %}
+
+          <tbody>
+          <tr onclick="document.location='{% url 'details' file.pk %}'">
+            
+            <!-- <td>{{file.upload_file}}</td> -->
+            <td>Requested    <b>{{file.requester}}</b></td>
+
+            {% if user.is_authenticated %}
+
+            <!-- {% if user.is_superviser %}
+            <td>{{user.username}}</td>
+            {% endif %}
+      
+            {% endif %} -->
+
+        
+            
+            {% if file.status == 'Aproved'%}
+            <td><span class="badge badge-info">{{file.status}}</span></td>
+            {% endif %}
+
+            <!-- <td><span class="badge badge-info">{{file.status}}</span></td> -->
+            <td>
+              <a href="{% url 'update' pk=file.pk%}"><button class="btn btn-sm btn-info fa fa-edit"></button></a>
+              <a href="{% url 'delete' pk=file.pk%}"><button class="btn btn-sm btn-danger fa fa-trash"></button></a>
+              
+            </td>
+          </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+{% endblock content %}
+</body>
+</html>

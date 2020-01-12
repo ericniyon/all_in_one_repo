@@ -1,0 +1,138 @@
+ {% extends 'base.html' %} 
+{% load staticfiles %}
+
+      {% block content %}
+      <div class="card">
+            <div class="card-body">
+           
+                
+                {% if objects and objects1 %}
+                  
+                
+                <form>
+                   <div class="row">
+                    <div class="col-md-3   offset-2">
+                                    
+                            <div class="ml-0"><img  src="{% static 'images/urlogo.png' %}" height="40" width="40">
+                            <div ><b class="text-info">UNIVERSITY <i>of</i> <br>RWANDA</b></div>
+                            </div>
+                                
+                    </div>
+                    
+                    <div class="col-md-6">
+                            <label class="text-right"><b><i>CLLEGE OF SCIENCE <br> AND TECHNOLOGY</i></b></label>
+                            
+                            
+                    </div>
+                   </div>
+                   <hr>
+                    <div class="row">
+                            
+                        <div class="col-md-8 col-sm-6 offset-2">
+
+                                <label class="text-center"><b>IN-COUNTRY MISSION AUTHORIZATION FORM<br><i>Mission Serial No:  {{objects.id}}</i></b>
+                                </label><br><br>
+
+
+
+                            <div class="lead">
+                                    1. Issued to : <b>{{objects.name}}</b><br>
+
+                                    2. Department : <b>{{objects.department}}</b><br>
+            
+                                    3. Function  :<b>{{objects.role}}</b><br>
+            
+                                    4. Purpose of Mission  :<b>{{objects1.purpose}}</b><br>
+            
+            
+                                    5. Expected Results : <b>{{objects1.result}}</b><br>
+            
+                                    6. Destnation : <b>{{objects1.destnation}}</b><br>
+            
+                                    7. Distance : <b>{{objects1.distance}}</b><br>
+            
+                                    8. Departure Dare  :  <b>{{objects1.dipature_date}}</b><br>
+            
+                                    9. Returning Date  : <b>{{objects1.returnning_date}}</b><br>
+            
+                                    10. Duration Of The Mission : <b>{{objects1.duration_of_mission}}</b><br>
+            
+                                    11. Transportation Means : <b>{{objects.transport}}</b><br>
+            
+            
+            
+                            </div>
+    
+    
+                            <div class="lead mt-5">
+                                    
+                                    {% if objects.status == 'Aproved' %}
+                                    This Request Has been Aproved by  : <span></span>   <b>{{ objects.school.superviser }}</b><br>                 
+                                    
+                                    {% endif %}
+    
+                                    Done at KIGALI on .../.../....<br>
+            
+            
+                                    <b><u>Authorized by VC/DVCs/Principle or Campus Director of Operations</u></b><br>
+                                    <b>Acknowledged by HR Office {{object.hr}}</b><br>
+                                    
+                            </div>
+    
+                            
+                            
+                                    <label class="text-right small">Visa for the destnation.......<br>
+                                            Stamp and signature....................<br>
+                                            Arrival Date   :  {{objects1.returnning_date}}<br>
+            
+                                        Departure Date :  {{objects1.dipature_date}}</label>
+
+                                     
+                                     <!-- {{objects.school.superviser}}  -->
+
+                                
+                                      
+                                        
+                        </div>
+                    
+                    </div>
+            
+                </form>
+                {% endif %}
+                
+                
+                <!-- <span>
+                {% if objects %}
+                
+                    <embed src="{{ objects.upload_file.url }}" height="500" width="500" type="application/pdf">
+                  
+                
+                {% endif %}
+                
+                </span> -->
+
+            </div>
+          </div>   
+          <br><br>
+          <div class="mb-50">
+                {% if objects.status == 'Aproved' %}
+                <a href="{% url 'autho' objects.pk %}"> <input type="button" value="Authorize" class="btn btn-sm " style=" background-color: #006991;
+                        color: white;" ></a>
+                
+                {% elif objects.status == 'Pending'%}
+                
+                
+                <a href="{% url 'task' objects.pk %}"> <input type="button" value="Aprove" class="btn btn-sm " style=" background-color: #006991;
+                        color: white;" ></a>
+                {% endif %}
+                
+
+                
+          
+              
+               Or
+              <a href="{% url 'reject' objects.pk %}"> <input type="button" value="Reject" class="btn btn-sm " style=" background-color: #006991;
+                color: white;" ></a>
+          
+          </div>
+    {% endblock content %} 

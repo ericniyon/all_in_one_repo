@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %}
+  Missions Management System
+{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block notification %}
+  {{notification}}
+  {% endblock notification %}
+
+    {% block content %}
+
+
+                
+                    <div class="card">
+                      
+                      <div class="card-header ">
+                        <b>Request Mission</b>
+                      </div>
+                      <div class="card-body">
+                        <form method="post"  enctype="multipart/form-data" id="personForm" data-schools-url="{% url 'ajax_load_schools' %}" data-departments-url="{% url 'ajax_load_departments' %}" data-roles-url="{% url 'ajax_load_roles' %}"  autocomplete="off">
+                          {% csrf_token %}
+                              <div class="row">
+                                      <div class="col md-6" >
+                                        
+                                        {{ form1|crispy }}
+                                       
+                    
+                                      </div>
+                                      <div class="col md-6 " >
+                                              
+                                              {{form2|crispy}}
+                                              
+                                      </div>
+                              </div>
+                              <div class="col-md-offset-2">
+                                
+                                  {% with url_name=request.resolver_match.url_name   %}
+                                    {% if url_name == 'requesting' %}
+    
+                                      <button type="submit" class="btn  btn-labeled pull-right" style=" background-color: #006991;
+                                      color: white;">Submit<span class="btn-label btn-label-right "><i class="fa fa-check"></i></span></button>
+                                  
+                                    {% elif url_name == 'update'%}
+                                    <button type="submit" class="btn  btn-labeled pull-right" style=" background-color: #006991;
+                                    color: white;">Update<span class="btn-label btn-label-right "><i class="fa fa-check"></i></span></button>
+                                    <!-- {% elif url_name == 'myStaff'%}
+                                    <button type="submit" class="btn btn-success btn-labeled pull-right">Save<span class="btn-label btn-label-right "><i class="fa fa-check"></i></span></button>
+                                     -->
+                                    
+                                    {% else %}
+                                    <button type="submit" class="btn btn-danger btn-labeled pull-right">Delete<span class="btn-label btn-label-right "><i class="fa fa-check"></i></span></button>
+  
+                                    {% endif %}
+                                    
+                                  {% endwith %}
+                                </div>
+                          </div>
+                  </form>
+                      </div>
+                    </div>
+        
+      
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+          $("#id_category").change(function () {
+            var url = $("#personForm").attr("data-departments-url");
+            var categoryId = $(this).val();
+      
+            $.ajax({
+              url: url,
+              data: {
+                'category': categoryId
+              },
+              success: function (data) {
+                $("#id_department").html(data);
+              }
+            });
+      
+          });
+        </script> -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+
+$("#id_category").change(function () {
+      var url = $("#personForm").attr("data-schools-url");
+      var categoryId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'category': categoryId
+        },
+        success: function (data) {
+          $("#id_school").html(data);
+        }
+      });
+    });
+
+
+    $("#id_school").change(function () {
+      var url = $("#personForm").attr("data-departments-url");
+      var schoolId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'school': schoolId
+        },
+        success: function (data) {
+          $("#id_department").html(data);
+        }
+      });
+
+    });
+
+     
+
+
+    $("#id_category").change(function () {
+      var url = $("#personForm").attr("data-roles-url");
+      var categoryId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'category': categoryId
+        },
+        success: function (data) {
+          $("#id_role").html(data);
+        }
+      });
+    });
+
+
+    
+        </script>
+    {% endblock content %}
+
+

@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+{% block content %}
+
+{% for result in results %}
+
+    <b>Component Name:</b> {{result.name}}<br>
+    <b>Location Name:</b> {{result.location}}
+
+{% endfor %}
+
+
+{% endblock %}

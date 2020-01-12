@@ -1,0 +1,673 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block extracss %}
+	<link rel="stylesheet" href="{% static 'css/datepicker3.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'jquery-ui/jquery-ui.min.css' %}" media="all" type="text/css" />
+	<link rel="stylesheet" href="{% static 'jquery-week-calendar/css/jquery.weekcalendar.css' %}" media="all" type="text/css" />
+	<link rel="stylesheet" type="text/css" media="all" href="{% static 'css/week-calendar.css' %}" />
+	<link rel="stylesheet" href="{% static 'intlTelInput/css/intlTelInput.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'jquery.growl/css/jquery.growl.css' %}" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="{% static 'select2/css/select2.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'select2/css/select2-bootstrap.css' %}" />
+{% endblock %}
+{% block extrahead %}
+	{% include 'core/snippets/tag-color-styles.html' %}
+{% endblock %}
+{% block title %}{{CUSTOMER.name|default_if_none:"AppointWare"}} {% trans "Calendar" %} | {{site.name}}{% endblock %}
+{% block top_sidebar %}<div id="datepicker"></div>{% endblock %}
+{% block main_content %}	
+	<div class="panel panel-default">
+	  <div class="panel-heading clearfix">
+	    <h3 class="panel-title pull-left">
+	    {% block calendar_title %}{{CUSTOMER.name|default_if_none:"AppointWare"}}{% endblock %}
+	    </h3>
+	    <div class="btn-group pull-right">
+	    	{% block calendar_custom_buttons %}{% endblock %}
+	    	{% block calendar_fixed_buttons %}
+	    	<button class="btn btn-sm btn-default" id="go-fullscreen"><i class="fa fa-expand"></i> {% trans "Expland" %}</button>
+	    	<button class="btn btn-sm btn-default" id="go-prev"><i class="fa fa-chevron-left"></i> {% trans "Prev" %}</button>
+	    	<button class="btn btn-sm btn-default" id="go-today"><i class="fa fa-home"></i> {% trans "Today" %}</button>
+	    	<button class="btn btn-sm btn-default" id="go-next"><i class="fa fa-chevron-right"></i> {% trans "Next" %}</button>
+            <button class="btn btn-sm btn-default" id="choose-date"><i class="fa fa-calendar"></i> {% trans "Date" %}</button>
+            {% endblock %}
+	    </div>
+	  </div>
+	  {# {% cache 600 dashboard CUSTOMER.pk request.user.pk %} #}
+	  <div class="panel-body">
+	  	{% if CUSTOMER.is_new %}
+	  	<div class="alert alert-warning" role="alert">
+	  	  <h4>{% trans "Welcome to" %} {{site.name}}</h4>
+	  	  <p><strong>{% trans "Hint:" %}</strong> {% trans "Quickly create an appointment by clicking anywhere on the calendar below." %}</p>
+	  	</div>
+	  	{% endif %}
+	    <div id="calendar" class="row {% block calendar_class %}{% endblock %}"></div>	    
+	  </div>
+	</div>	
+
+	<!-- Add Appointment Modal -->
+	<div class="modal fade" id="add-appointment-modal" role="dialog" aria-labelledby="add-appointment-modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="add-appointment-modalLabel">{% trans "Add New Appointment" %}</h4>
+	      </div>
+	      <div class="modal-body" id="add-appointment-snippet-content"></div>
+	      <div class="modal-footer">
+	        <button type="button" id="add-appointment-modal-close" class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Edit Appointment Modal -->
+	<div class="modal fade" id="edit-appointment-modal" role="dialog" aria-labelledby="edit-appointment-modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="edit-appointment-modalLabel">{% trans "View Appointment" %}</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div id="view-appointment-content"></div>
+	      </div>
+	      <div class="modal-footer">
+	      	<div class="btn-toolbar pull-left" role="toolbar" aria-label="{% trans 'Actions' %}">
+	      	  <div class="btn btn-sm btn-group status-changer btn-dark-blue" role="group" data-status="confirmed">{% trans "Confirmed" %}</div>
+	      	  <div class="btn btn-sm btn-group status-changer btn-dark-blue" role="group" data-status="canceled">{% trans "Canceled" %}</div>
+	      	  <div class="btn btn-sm btn-group status-changer btn-dark-blue" role="group" data-status="showed">{% trans "Showed" %}</div>
+	      	  <div class="btn btn-sm btn-group status-changer btn-dark-blue" role="group" data-status="noshow">{% trans "No Showed" %}</div>
+	      	  <div class="btn btn-sm btn-group status-changer btn-dark-blue" role="group" data-status="notified">{% trans "Notified" %}</div>
+	      	  <div class="btn btn-sm btn-group status-changer btn-dark-blue" role="group" data-status="scheduled">{% trans "NOT Notified" %}</div>
+	      	</div>
+	        <div class="pull-right">
+	        	<button type="button" id="edit-appointment-modal-close" class="btn btn-sm btn-danger" data-dismiss="modal">{% trans "Close" %}</button>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	{% block custom_calendar_modals %}{% endblock %}
+	{# {% endcache %} #}
+{% endblock %}
+{% block extrajs %}
+	<script src="{% static 'js/jquery.cookie.js' %}"></script>
+	<script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+	<script src="{% static 'js/jquery-migrate-1.2.1.js' %}"></script>
+	<script src="{% static 'jquery-week-calendar/js/jquery.weekcalendar.js' %}"></script>
+	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'intlTelInput/js/intlTelInput.min.js' %}"></script>
+	<script src="{% static 'jquery.growl/js/jquery.growl.js' %}"></script>	
+	<script src="{% static 'select2/js/select2.full.min.js' %}"></script>	
+{% endblock %}
+{% block calendarjs %}
+ 	<script type='text/javascript'>
+ 		// navigation
+ 		{% block calendar_navigation %}
+ 		$(document).on('click', '#go-prev', function(event) {
+ 			event.preventDefault();
+ 			$("#calendar").weekCalendar("prevWeek");
+ 		});
+ 		$(document).on('click', '#go-today', function(event) {
+ 			event.preventDefault();
+ 			$("#calendar").weekCalendar("today");
+ 		});
+ 		$(document).on('click', '#go-next', function(event) {
+ 			event.preventDefault();
+ 			$("#calendar").weekCalendar("nextWeek");
+ 		}); 
+ 		$(document).on('click', '#go-fullscreen', function(event) {
+ 			event.preventDefault();
+ 			$("#user-nav").toggle();
+ 			$("#sidebar").toggle();
+ 			$("#content").toggleClass("fullscreen-mode");
+ 			$("#header").toggleClass("fullscreen-mode");
+ 		});	
+ 		{% endblock %}		
+
+ 		// change event status
+ 		$(document).on('click', '.status-changer', function(event) {
+ 			event.preventDefault();
+ 			var status = $(this).data("status");
+ 			var this_calEvent = $('#edit-appointment-modal').data("this_calEvent");
+ 			var appointment_id = $('#appointment-info-box').data("appointment-id");
+ 			var csrftoken = $.cookie('csrftoken');
+ 			var url = '{% url "appointments:edit_appointment_status" 0 %}'.replace (0, appointment_id);
+ 			$.post(url, {
+ 			        csrfmiddlewaretoken: csrftoken,
+ 			        id: appointment_id,
+ 			        status: status,
+ 			    },
+ 			    function(data) {
+ 			        if(data) {
+ 			        	this_calEvent.status = status;
+ 			        	$("#calendar").weekCalendar("updateEvent", this_calEvent);
+ 			        	$('#edit-appointment-modal').modal('hide');
+ 			        	$.growl.notice({ 
+ 			        		location: 'br',
+ 			        		title: "{% trans 'Updated Appointment Details' %}", 
+ 			        		message: '{% trans "Successfully updated appointment details" %}' 
+ 			        	});
+ 			        } else {
+ 			        	$.growl.error({ 
+ 			        		location: 'br',
+ 			        		message: '{% trans "An error occurred" %}' 
+ 			        	});
+ 			        }
+ 			    }
+ 			);
+ 		});
+
+ 		// id-add-client-form
+ 		$(document).on('submit','#id-add-client-form',function(event){
+ 			event.preventDefault();
+ 			var add_client_form = '#id-add-client-form';
+ 			$.ajax({
+ 				url: "{% url 'appointments:process_add_client_form' %}",
+ 				type: "POST",
+ 				data: $(add_client_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (!(data['success'])) {
+ 						$(add_client_form).replaceWith(data['form_html']);
+ 					}
+ 					else {
+ 						document.getElementById('appointment-client-id').value = data['client_id'];
+ 						$('#id-hidden-add-appointment-form').submit();
+ 					}
+ 				},
+ 				error: function () {
+ 					$(add_client_form).find('.error-message').show()
+ 				}
+ 			});
+ 		});
+
+ 		// edit-client-form
+ 		$(document).on('submit','#id-edit-client-form',function(event){
+ 			event.preventDefault();
+ 			var edit_client_form = '#id-edit-client-form';
+ 			var client_id = $('#appointment-info-box').data("client-id");
+ 			var url = '{% url "appointments:process_edit_client_form" 0 %}'.replace (0, client_id);
+ 			$.ajax({
+ 				url: url,
+ 				type: "POST",
+ 				data: $(edit_client_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (!(data['success'])) {
+ 						$(edit_client_form).replaceWith(data['form_html']);
+ 					}
+ 					else {	 						
+ 						$('#edit-appointment-modal').modal('hide');
+ 						$.growl.notice({ 
+ 							location: 'br',
+ 							title: "{% trans 'Updated Contact Details' %}", 
+ 							message: '{% trans "Successfully updated contact details" %}' 
+ 						});
+ 					}
+ 				},
+ 				error: function () {
+ 					$(edit_client_form).find('.error-message').show()
+ 				}
+ 			});
+ 		});
+
+ 		// id-event-info-form
+ 		$(document).on('submit','#id-event-info-form',function(event){
+ 			event.preventDefault();
+ 			var edit_event_form = '#id-event-info-form';
+ 			var event_id = $('#appointment-info-box').data("event-id");
+ 			var url = '{% url "appointments:process_edit_event_form" 0 %}'.replace (0, event_id);
+ 			$.ajax({
+ 				url: url,
+ 				type: "POST",
+ 				data: $(edit_event_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (!(data['success'])) {
+ 						$(edit_event_form).replaceWith(data['form_html']);
+ 					}
+ 					else { 						
+ 						$('#edit-appointment-modal').modal('hide');
+ 						$.growl.notice({ 
+ 							location: 'br',
+ 							title: "{% trans 'Updated Appointment Details' %}", 
+ 							message: '{% trans "Successfully updated appointment details" %}' 
+ 						});
+ 					}
+ 				},
+ 				error: function () {
+ 					$(edit_event_form).find('.error-message').show()
+ 				}
+ 			});
+ 		});
+
+ 		// select-user-form
+ 		$(document).on('submit','#id-select-client-form',function(event){
+ 			event.preventDefault();
+ 			var select_client_form = '#id-select-client-form';
+ 			$.ajax({
+ 				url: "{% url 'appointments:process_select_client_form' %}",
+ 				type: "POST",
+ 				data: $(select_client_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (!(data['success'])) {
+ 						$(select_client_form).replaceWith(data['form_html']);
+ 					}
+ 					else {
+ 						document.getElementById('appointment-client-id').value = data['client_id'];
+ 						$('#id-hidden-add-appointment-form').submit();
+ 					}
+ 				},
+ 				error: function () {
+ 					$(select_client_form).find('.error-message').show()
+ 				}
+ 			});
+ 		});
+
+ 		// generic event form
+ 		$(document).on('submit','#id-generic-event-info-form',function(event){
+ 			event.preventDefault();
+ 			var generic_event_form = '#id-generic-event-info-form';
+ 			$.ajax({
+ 				url: "{% url 'appointments:process_generic_event_form' %}",
+ 				type: "POST",
+ 				data: $(generic_event_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (!(data['success'])) {
+ 						$(generic_event_form).replaceWith(data['form_html']);
+ 					}
+ 					else {
+ 						$('#add-appointment-modal').modal('hide');
+ 						$.growl.notice({ 
+ 							location: 'br',
+ 							title: "{% trans 'Added Event' %}", 
+ 							message: "{% trans 'Successfully Added Event' %}", 
+ 						});	
+ 					}
+ 				},
+ 				error: function () {
+ 					$(generic_event_form).find('.error-message').show()
+ 				}
+ 			});
+ 		});
+
+ 		// id-edit-generic-event-info-form
+ 		$(document).on('submit','#id-edit-generic-event-info-form',function(event){
+ 			event.preventDefault();
+ 			var generic_event_form = '#id-edit-generic-event-info-form';
+ 			$.ajax({
+ 				url: "{% url 'appointments:process_edit_generic_event_form' %}",
+ 				type: "POST",
+ 				data: $(generic_event_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (!(data['success'])) {
+ 						$(generic_event_form).replaceWith(data['form_html']);
+ 					}
+ 					else {
+ 						$('#edit-appointment-modal').modal('hide');
+ 						$.growl.notice({ 
+ 							location: 'br',
+ 							title: "{% trans 'Added Event' %}", 
+ 							message: "{% trans 'Successfully Added Event' %}", 
+ 						});	
+ 					}
+ 				},
+ 				error: function () {
+ 					$(generic_event_form).find('.error-message').show()
+ 				}
+ 			});
+ 		});
+
+ 		// add-appointment-form
+ 		$(document).on('submit','#id-hidden-add-appointment-form',function(event){
+ 			event.preventDefault();
+ 			var appointment_form = '#id-hidden-add-appointment-form';
+ 			var this_calEvent = $('#id-generic-event-info-form').data('this_calEvent'); 			
+ 			$.ajax({
+ 				url: "{% url 'appointments:add_event' %}",
+ 				type: "POST",
+ 				data: $(appointment_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (data.success) {
+ 						this_calEvent.id = data.appointment.id;
+ 						this_calEvent.title = data.appointment.title;
+ 						$("#calendar").weekCalendar("updateEvent", this_calEvent);
+ 						$('#add-appointment-modal').modal('hide');
+ 						$.growl.notice({ 
+ 							location: 'br',
+ 							title: "{% trans 'Added Appointment' %}", 
+ 							message: {% blocktrans %}'Start: ' + document.getElementById('appointment-start-id').value + '<br/>End: ' + document.getElementById('appointment-end-id').value{% endblocktrans %}
+ 						});
+ 					} else {
+ 						$.growl.error({ 
+ 							location: 'br',
+ 							message: '{% trans "An error occurred" %}' 
+ 						});
+ 					}
+ 				},
+ 				error: function () {
+ 					$.growl.error({ 
+ 						location: 'br',
+ 						message: '{% trans "An error occurred" %}' 
+ 					});
+ 				}
+ 			});
+ 		});
+
+ 		// delete appointment form
+ 		$(document).on('submit','#delete-appointment-form',function(event){
+ 			event.preventDefault();
+ 			var delete_appointment_form = '#delete-appointment-form';
+ 			var appointment_id = $('#appointment-info-box').data("appointment-id");
+ 			var url = '{% url "appointments:delete_appointment" 0 %}'.replace (0, appointment_id);
+ 			$.ajax({
+ 				url: url,
+ 				type: "POST",
+ 				data: $(delete_appointment_form).serialize(),
+ 				dataType: 'json',
+ 				success: function(data) {				    	
+ 					if (data) {
+ 						$('#edit-appointment-modal').modal('hide');
+ 						$("#calendar").weekCalendar("removeEvent", appointment_id);
+ 						$.growl.notice({ 
+ 							location: 'br',
+ 							message: '{% trans "Successfully deleted appointment" %}' 
+ 						});
+ 					} else {
+ 						$.growl.error({ 
+ 							location: 'br',
+ 							message: '{% trans "An error occurred" %}' 
+ 						});
+ 					}
+ 				},
+ 				error: function () {
+ 					$.growl.error({ 
+ 						location: 'br',
+ 						message: '{% trans "An error occurred" %}' 
+ 					});
+ 				}
+ 			});
+ 		});
+
+ 		$(document).ready(function() {
+ 			$('#calendar').weekCalendar({
+ 				timeslotHeight: {{CUSTOMER.time_slot_height}},
+ 				timeslotsPerHour: {{CUSTOMER.time_slots_per_hour}},
+ 				defaultEventLength: 4,
+ 				displayFreeBusys: true,
+ 				defaultFreeBusy: {free: true},
+ 				{% if request.user.userprofile.is_user %}
+ 				readonly : true,
+ 				{% else %}
+ 				readonly : false,
+ 				{% endif %}
+ 				firstDayOfWeek: 1,
+ 				showHeader: false,				
+            	height: function($calendar) {
+	             	return $('table.wc-time-slots').outerHeight() + $('.ui-widget-content.wc-header').outerHeight();
+            	},
+            	minBodyHeight: 1600, 
+            	{% block schedule_specific_js %}            		
+            		startOnFirstDayOfWeek: true,
+	            	daysToShow: {{CUSTOMER.shown_days}},
+	            	data: "{% url 'appointments:calendar_event_feed' %}",
+	 				businessHours: {
+						{% if CUSTOMER.global_opening_time.from_hour.hour %}
+							start: {{CUSTOMER.global_opening_time.from_hour.hour}},
+						{% else %}
+							start: 8,
+						{% endif %}
+						{% if CUSTOMER.global_opening_time.from_hour.hour %}
+		                	end: {{CUSTOMER.global_closing_time.to_hour.hour}},
+		                {% else %}
+		                	end: 17,
+		                {% endif %}
+		                limitDisplay: true
+	            	},  
+	            	users: [
+						{% for venue in venues %}
+							{
+								'id': {{venue.id}},
+								'name': '{{venue.name|upper}}'
+							},
+						{% endfor %}
+	 				],	
+	 				{% if CUSTOMER.allow_overlap %}
+		 				allowCalEventOverlap: true,
+		 				overlapEventsSeparate: true,
+	 				{% endif %}
+ 				{% endblock %}	
+            	showAsSeparateUser: true,            	
+            	getUserId: function(user, index, calendar) {
+				    return user.id;
+ 				},
+ 				getUserName: function(user, index, calendar) {
+ 				    return user.name;
+ 				},
+ 				eventRender: function(calEvent, $event) {
+ 					$event.addClass(calEvent.status);
+ 					$event.addClass(calEvent.tag);
+				},
+ 				eventNew: function(calEvent, $event) {
+ 					$("#add-appointment-snippet-content").html("");
+ 					var data = {};
+ 					data['start'] = calEvent.start.toISOString();
+ 					data['end'] = calEvent.end.toISOString();
+ 					data['venue_id'] = calEvent.userId;
+ 					var url = "{% url 'appointments:appointment_client_snippet' %}" + '?' + $.param(data);
+ 					$("#add-appointment-snippet-content" ).load(url, function(){
+ 						$('#add-appointment-modal').modal();
+ 						// select2 		
+ 						$("#id-select-client").select2({
+ 							placeholder: "{% trans 'Select a client' %}",
+ 							width:'100%',
+ 						}); 	
+ 						// generic event info
+ 						$('#generic-start').val(calEvent.start.toISOString());
+ 						$('#generic-end').val(calEvent.end.toISOString());
+ 						$('#generic-venue-id').val(calEvent.userId);
+ 						$('#id-generic-event-info-form').data("this_calEvent", calEvent);
+ 					});
+ 				},
+ 				eventDrop: function(calEvent, $event) {
+ 					editEvent(calEvent);
+ 				},
+ 				eventResize: function(calEvent, $event) {
+ 					editEvent(calEvent);
+ 				},
+ 				eventBody: function(calEvent, $event) {
+ 					return calEvent.calendarBody;
+ 				},
+ 				eventClick: function(calEvent, $event) {
+ 					{% if not request.user.userprofile.is_user %}
+ 					var url = '{% url "appointments:appointment_snippet" 0 %}'.replace (0, calEvent.id);
+ 					$("#view-appointment-content").load(url, function() {
+ 						$('#edit-appointment-modal').modal();
+ 						$('#edit-appointment-modal').data("this_calEvent", calEvent);
+ 						// intlTelInput
+ 						$("#id_phone").intlTelInput({
+ 							autoFormat: true,
+ 							nationalMode: false,
+ 						  	preferredCountries: ['ke'],
+ 						  	utilsScript: "{% static 'intlTelInput/lib/libphonenumber/build/utils.js' %}"
+ 						});
+ 						// select2
+ 						$("#id-tag").select2({
+ 							placeholder: "{% trans 'Select Tag' %}",
+ 							width:'100%',
+ 						});
+ 					});	 					
+ 				    {% endif %}
+ 				},
+ 				noEvents: function() {
+ 				    $.growl.notice({ 
+ 				    	location: 'br',
+ 				    	message: '{% trans "There are no appointments to show!" %}'
+ 				    });
+ 				}
+ 			});
+
+			$('#choose-date').datepicker({
+				'autoclose': true,
+				'todayBtn': true,
+				'todayHighlight': true,
+				})
+				.on('changeDate', function(ev){
+					var dn = new Date(ev.date);
+					$('#calendar').weekCalendar("gotoWeek", dn);
+				});
+
+			function editEvent(calEvent) {
+				var csrftoken = $.cookie('csrftoken');
+				var url = '{% url "appointments:edit_event" 0 %}'.replace (0, calEvent.id);
+				$.post(url, {
+				        csrfmiddlewaretoken: csrftoken,
+				        id: calEvent.id,
+				        client: calEvent.clientId,
+				        start_datetime: calEvent.start.toISOString(), 
+				        end_datetime: calEvent.end.toISOString(), 
+				        venue: calEvent.userId,
+				    },
+				    function(data) {
+				        if(data) {
+				        	$.growl.notice({ 
+				        		location: 'br',
+				        		title: "{% trans 'Updated Appointment Details' %}", 
+				        		message: '{% trans "Successfully updated appointment details" %}' 
+				        	});
+				        } else {
+				        	$.growl.error({ 
+				        		location: 'br',
+				        		message: '{% trans "An error occurred" %}' 
+				        	});
+				        }
+				    }
+				);
+			}
+
+			$('body').on("click touchstart", ".client-toggler", function(e){
+			   $("#select-client, #add-client").toggle();
+			});
+
+			$('body').on("click touchstart", "#show-edit-contact-details", function(e){
+			   $("#appointment-info-motherload, #edit-contact-details").toggle();
+			});
+
+			$('body').on("click touchstart", "#show-edit-event-details", function(e){
+			   $("#appointment-info-motherload, #edit-event-details").toggle();
+			});
+
+			$('body').on("click touchstart", "#delete-appointment", function(e){
+			   $("#appointment-info-motherload, #delete-appointment-confirmation").toggle();
+			});
+
+			$('body').on("click touchstart", ".generic-event-toggler", function(e){
+			   if ($("#add-generic-event").is(':visible')) {
+			      $("#add-generic-event").hide();
+			      $("#select-client").show();
+			      $("#add-client").hide();
+			   } else {
+			   	  $("#add-generic-event").show();
+			   	  $("#select-client").hide();
+			   	  $("#add-client").hide();
+			   }
+			});
+
+			$('.modal').on('shown.bs.modal', function() {
+				// Make sure the modal and backdrop are siblings (changes the DOM)
+				$(this).before($('.modal-backdrop'));
+				// Make sure the z-index is higher than the backdrop
+				$(this).css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 1);
+			});
+
+			$('#add-appointment-modal').on('hide.bs.modal', function (e) {
+			  	$('#calendar').weekCalendar('refresh');
+			  	$("#select-client").show();
+			  	$("#add-client").hide();
+		  	  	if ($('#id-add-client-form').length) {
+		  		  	document.getElementById("id-add-client-form").reset();
+		  		}
+		  		if ($('#id-select-client-form').length) {
+		  		  	document.getElementById("id-select-client-form").reset();
+		  		}
+		  		if ($('#id-generic-event-info-form').length) {
+		  		  	document.getElementById("id-generic-event-info-form").reset();
+		  		}
+		  		if ($('#id-edit-generic-event-info-form').length) {
+		  		  	document.getElementById("id-edit-generic-event-info-form").reset();
+		  		}			
+			})
+
+			$('#edit-appointment-modal').on('hide.bs.modal', function (e) {
+			  	$('#calendar').weekCalendar('refresh');
+			})				
+
+			$("#id_phone").intlTelInput({
+				autoFormat: true,
+				nationalMode: false,
+			  	preferredCountries: ['ke'],
+			  	utilsScript: "{% static 'intlTelInput/lib/libphonenumber/build/utils.js' %}"
+			});
+ 		});
+
+		$(document).ajaxStop(function() {
+			$('#add-appointment-modal').on('hide.bs.modal', function (e) {
+			  	if ($('#id-add-client-form').length) {
+				  	document.getElementById("id-add-client-form").reset();
+				}
+				if ($('#id-select-client-form').length) {
+				  	document.getElementById("id-select-client-form").reset();
+				}
+				if ($('#id-generic-event-info-form').length) {
+				  	document.getElementById("id-generic-event-info-form").reset();
+				}
+				if ($('#id-edit-generic-event-info-form').length) {
+				  	document.getElementById("id-edit-generic-event-info-form").reset();
+				}
+			})
+
+			$("#id_phone").intlTelInput({
+				autoFormat: true,
+				nationalMode: false,
+			  	preferredCountries: ['ke'],
+			  	utilsScript: "{% static 'intlTelInput/lib/libphonenumber/build/utils.js' %}"
+			});
+		});
+
+		// on blur: validate
+		var telInput = $("#id_phone");
+		telInput.blur(function() {
+		  if ($.trim(telInput.val())) {
+		    if (telInput.intlTelInput("isValidNumber")) {		      
+		      $('#div_id_phone').addClass('has-success');
+		      $("#id_full_phone").val($("#id_phone").intlTelInput("getNumber"));
+		    } else {
+		      telInput.addClass("error");
+		      $('#div_id_phone').addClass('has-error');
+		    }
+		  }
+		});
+
+		// on keydown: reset
+		telInput.keydown(function() {
+		  $('#div_id_phone').removeClass('has-error');
+		});	
+
+		function updateCalendarPeriodically() {
+			$('#calendar').weekCalendar('refresh');
+		}
+
+		var interval = setInterval(updateCalendarPeriodically, 300000);
+ 	</script>		
+ 	{% block calendar_footer_js %}{% endblock %}
+{% endblock %}

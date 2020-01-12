@@ -1,0 +1,28 @@
+{% extends "front-base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load cache %}
+
+{% block title %}{% trans "Support" %} | {{site.name}}{% endblock %}
+
+{% block all_content %}
+{% cache 86400 support %}
+	<div id="main-page">
+	    <div class="row content-section">
+	      <div class="container">
+	        <div class="col-md-9">
+	        	<h3>{% trans "Support" %}</h3>
+	         	<div class="page-content">
+	         		<p>
+	         		{% blocktrans %}
+	         			We love speaking to our customers.  You can send us a message below or send an email (to support@appointware.com) and we'll try our best to get back to you within 24 hours.
+	         		{% endblocktrans %}
+	         		</p>
+	         		{% crispy form %}
+	         	</div>
+	      	</div>
+	      	{% include 'core/snippets/front-sidebar.html' %}
+	    </div>
+    </div>
+{% endcache %}
+{% endblock %}

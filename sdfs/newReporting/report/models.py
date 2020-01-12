@@ -1,0 +1,45 @@
+from django.db import models
+
+from core.models import UserProfile
+from dashboard.models import Department
+from .scheduler import schedule_reminder
+
+import datetime
+from datetime import timedelta, date
+from district_reporting.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+
+
+class ReportType(models.Model):
+
+    WEEK = 1
+    TERM = 2
+    YEAR = 3
+    TIME_CHOICES = (
+        (WEEK, 'Icyumweru'),
+        (TERM, 'Igihembwe'),
+        (YEAR, 'Umwaka'),
+    )
+    report_type = models.CharField(max_length=300)
+    igihe_itangirwa = models.PositiveSmallIntegerField(choices=TIME_CHOICES)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    deadline = models.DateTimeField(default=schedule_reminder)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.report_type
+
+
+class Report(models.Model):
+    report_type = models.ForeignKey(ReportType, on_delete=models.CASCADE)
+    file = models.FileField()
+    date = models.DateTimeField()
+
+
+def mail( *args, **kwargs):
+    subject = "Welcome "
+    message = 'New Report has been added successfully !!!'
+    recepient = 'byives21@gmail.com'
+    send_mail(subject, message, EMAIL_HOST_USER, [recepient])
+
+    return None

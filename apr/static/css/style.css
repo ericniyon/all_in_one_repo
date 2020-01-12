@@ -1,0 +1,83 @@
+.fc h2 {
+  font-size:22px;
+}
+
+.fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {
+  padding-bottom: 0!important;
+}
+
+.top-info {
+	margin:0 auto;
+	padding:5px 10px;
+}
+
+.top-title {
+	font-weight:bold;
+}
+
+.intl-tel-input {
+	display:block!important;
+}
+
+.no-padding {
+	padding:0;
+}
+
+th.control-group.error .help-inline {
+	color:#ff0000!important;
+}
+
+th.control-group.error .form-control {
+	border-color:#ff0000!important;
+}
+
+.extra-modal-info {
+	margin-top:20px;
+}
+
+.bottom-20 {
+	margin-bottom:20px;
+}
+
+.panel-title {
+  font-size: 20px;
+}
+
+#header h1 {
+  background: url("../img/logo.png") no-repeat scroll 0 0 transparent;
+  height: 77px;
+  left: 5px;
+  line-height: 600px;
+  overflow: hidden;
+  position: relative;
+  top: 0px;
+  width: 191px;
+  margin-bottom:20px;
+}
+
+.container,
+#content {
+  min-height:1000px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding:0!important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  border:none!important;
+  background:transparent!important;
+}
+
+#content.fullscreen-mode {
+  padding-top:15px;
+  margin-left:0;
+}
+
+#header.fullscreen-mode {
+  height:115px;
+}
+
+.data-top {
+  margin-bottom:10px;
+}
